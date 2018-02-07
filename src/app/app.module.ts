@@ -3,14 +3,18 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
+import { ChroniconSkillComponent } from './chronicon-skill/chronicon-skill.component';
+import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ChroniconSkillComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
