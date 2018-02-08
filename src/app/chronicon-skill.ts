@@ -34,8 +34,8 @@ export class ChroniconSkill {
   effect: string;
   element: string;
   family: string;
-  max_rank: string;
-  min_level: string;
+  max_rank: number;
+  min_level: number;
   name: string;
   proc: string;
   range: string;
