@@ -85,24 +85,33 @@ export class ChroniconSkill {
   public getTooltip(rank): string {
     let tooltip = this.description;
     // todo: make more efficient replacement of values.
-    tooltip = tooltip.replace(/XDAM/g, '');
-    tooltip = tooltip.replace(/DAMAGE%/g, this.getValue(this.damage, rank));
-    tooltip = tooltip.replace(/PROC%/g, this.getValue(this.proc, rank));
-    tooltip = tooltip.replace(/RANGE2/g, this.getValue(this.range2, rank));
-    tooltip = tooltip.replace(/RANGE/g, this.getValue(this.range, rank));
-    tooltip = tooltip.replace(/VALUE/g, this.getValue(this.value, rank));
-    tooltip = tooltip.replace(/DURATION/g, this.getValue(this.duration, rank));
-    tooltip = tooltip.replace(/COST100/g, this.getValue(this.cost100, rank));
-    tooltip = tooltip.replace(/COST1/g, this.getValue(this.cost1, rank));
-    tooltip = tooltip.replace(/REQUIRED/g, this.getValue(this.skill_requirement, rank));
-    tooltip += '\r\n Cooldown: ' + this.cooldown + 's';
+    if (tooltip) {
+      tooltip = tooltip.replace(/XDAM/g, '');
+      tooltip = tooltip.replace(/DAMAGE%/g, this.getValue(this.damage, rank));
+      tooltip = tooltip.replace(/PROC/g, this.getValue(this.proc, rank, 100));
+      tooltip = tooltip.replace(/RANGE2/g, this.getValue(this.range2, rank));
+      tooltip = tooltip.replace(/RANGE/g, this.getValue(this.range, rank));
+      tooltip = tooltip.replace(/VALUE/g, this.getValue(this.value, rank));
+      tooltip = tooltip.replace(/DURATION/g, this.getValue(this.duration, rank));
+      tooltip = tooltip.replace(/COST100/g, this.getValue(this.cost100, rank));
+      tooltip = tooltip.replace(/COST1/g, this.getValue(this.cost1, rank));
+      tooltip = tooltip.replace(/REQUIRED/g, this.skill_requirement);
+      tooltip = tooltip.replace(/EFFECT%/g, this.getValue(this.effect, rank));
+    }
     return tooltip;
   }
 
-  getValue(attribute, rank): string {
+  getValue(attribute, rank, divisor = null): string {
     // rank 0 shows the same dmg as rank 1 - additionally make sure we cannot go out of bounds [0, max rank]
     if (attribute) {
-      return attribute.split(',')[Math.max(rank - 1, 0)];
+      if (divisor) {
+        return Number(attribute.split(',')[Math.max(rank - 1, 0)]) / divisor;
+
+      } else {
+        return attribute.split(',')[Math.max(rank - 1, 0)];
+      }
     }
   }
+
+
 }

@@ -1,0 +1,51 @@
+.chronicon-skill {
+  width: 64px;
+  height: 64px;
+  position: relative; /* All 'absolute'ly positioned elements are relative to this one */
+
+}
+
+.chronicon-skill-button {
+  width: 100%;
+  height: 100%;
+  background-color: #222222;
+  border-radius: 50%;
+  position: absolute;
+
+}
+
+.chronicon-skill-count {
+  position: absolute;
+  right: 0;
+  width: 18px;
+  height: 18px;
+  z-index: 1;
+  color: goldenrod;
+  background-color: #222222;
+  border-radius: 50%;
+  text-align: center;
+
+}
+
+.chronicon-skill-name {
+  top: 100%;
+  position: absolute;
+  z-index: 1;
+}
+.chronicon-skill-tooltip {
+  position: absolute;
+  z-index: 100;
+  background-color: #222222;
+  color: goldenrod;
+  width: 300px;
+  padding: 0px 5px 5px 5px;
+  border-radius: 10px;
+}
+
+.golden-frame{
+  border: goldenrod 3px solid;
+}
+
+.golden-frame-thin{
+  border: goldenrod 1px solid;
+}

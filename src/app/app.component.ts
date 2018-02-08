@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnChanges, SimpleChanges} from '@angular/core';
 import {ChroniconSkill} from './chronicon-skill';
 import {HttpClient} from '@angular/common/http';
 import {forEach} from '@angular/router/src/utils/collection';
@@ -8,14 +8,20 @@ import {forEach} from '@angular/router/src/utils/collection';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnChanges {
   title = 'Tree demo';
-  demo: ChroniconSkill = <ChroniconSkill>{};
+  demo: ChroniconSkill = <ChroniconSkill>{
+    image: './assets/img.png'
+  };
   skills;
   version = 'VERSIONSTRING';
 
   constructor(private http: HttpClient) {
     this.fetchTreeData();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(this.skills);
   }
 
   loadTreeData() {
@@ -37,6 +43,22 @@ export class AppComponent {
     }
     this.skills = data.tree;
     this.version = data.version;
-    this.demo = new ChroniconSkill(data.tree.Berserker.Dragonkin.Dragmageddon);
+    const skillList = [];
+    // for (const character in this.skills) {
+    //   if (this.skills.hasOwnProperty(character)) {
+        for (const tree in this.skills['Berserker']) {
+          if (this.skills['Berserker'].hasOwnProperty(tree)) {
+            for (const skill in this.skills['Berserker'][tree]) {
+              if (this.skills['Berserker'][tree].hasOwnProperty(skill)) {
+                skillList.push(new ChroniconSkill(this.skills['Berserker'][tree][skill], 'assets/img.png'));
+              }
+            }
+          }
+        }
+      // }
+    // }
+    this.skills = skillList;
+    console.log(skillList);
+    this.demo = new ChroniconSkill(data.tree.Berserker.Dragonkin.Dragmageddon, 'assets/img.png');
   }
 }

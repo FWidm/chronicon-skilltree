@@ -5,7 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { ChroniconSkillComponent } from './chronicon-skill/chronicon-skill.component';
-import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
+import { FormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common'; // <-- NgModel lives here
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
     BrowserModule,
     // import HttpClientModule after BrowserModule.
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

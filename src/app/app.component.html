@@ -21,3 +21,9 @@
 <h1>{{title}} - V. {{version}}</h1>
 <app-chronicon-skill [chroniconSkill]="demo"></app-chronicon-skill>
 <!--<app-chronicon-skill [chronicon_skill]="skills[1]"></app-chronicon-skill>-->
+<hr>
+<ul class="skills">
+  <li  *ngFor="let skill of skills">
+    <app-chronicon-skill [chroniconSkill]="skill"></app-chronicon-skill>
+  </li>
+</ul>
