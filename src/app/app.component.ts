@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {ChroniconSkill} from './chronicon-skill';
 import {HttpClient} from '@angular/common/http';
+import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-root',
@@ -9,16 +10,8 @@ import {HttpClient} from '@angular/common/http';
 })
 export class AppComponent {
   title = 'Tour of Heroes';
-  skills;
-  demo: ChroniconSkill = <ChroniconSkill>{
-  };
-  // skill2: ChroniconSkill = <ChroniconSkill>{
-  //   name: this.skills.tree.Berserker.Dragonkin.Dragmageddon.name,
-  //   x: this.skills.tree.Berserker.Dragonkin.Dragmageddon.x,
-  //   y: this.skills.tree.Berserker.Dragonkin.Dragmageddon.y,
-  //   max: this.skills.tree.Berserker.Dragonkin.Dragmageddon.max_rank,
-  //   image: null,
-  // };
+  demo: ChroniconSkill = <ChroniconSkill>{};
+  skills: [ChroniconSkill];
 
   constructor(private http: HttpClient) {
     this.fetchTreeData();
@@ -36,14 +29,17 @@ export class AppComponent {
   }
 
   private updateSkills(data) {
-    console.log(data);
+    // get charnames
+    console.log(data.tree);
+    if (data == null) {
+      return;
+    }
+    // get tree names per char
+    for (const char in data.tree) {
+      console.log(data.tree[char]);
+    }
+
+
     this.demo = data.tree.Berserker.Dragonkin.Dragmageddon;
-    // this.demo = <ChroniconSkill>{
-    //   name: data.tree.Berserker.Dragonkin.Dragmageddon.name,
-    //   x: data.tree.Berserker.Dragonkin.Dragmageddon.x,
-    //   y: data.tree.Berserker.Dragonkin.Dragmageddon.y,
-    //   max_level: data.tree.Berserker.Dragonkin.Dragmageddon.max_rank,
-    //   image: null,
-    // };
   }
 }
