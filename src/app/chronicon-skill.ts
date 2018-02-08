@@ -1,4 +1,5 @@
 import {Input} from '@angular/core';
+import {el} from '@angular/platform-browser/testing/src/browser_util';
 
 /*
 Number of attributes on the skills.
@@ -70,20 +71,38 @@ export class ChroniconSkill {
     this.value = jsonObj.value;
   }
 
+  /*
+  {'DAMAGE%': 308,
+ 'DURATION': 247,
+ 'EFFECT%': 324,
+ 'PROC%': 77,
+ 'RANGE': 208,
+ 'RANGE2': 28,
+ 'REQUIRED': 144,
+ 'VALUE': 94, 'VALUE%': 1, x
+ 'XDAM': 214}
+   */
   public getTooltip(rank): string {
     let tooltip = this.description;
     // todo: make more efficient replacement of values.
     tooltip = tooltip.replace(/XDAM/g, '');
     tooltip = tooltip.replace(/DAMAGE%/g, this.getValue(this.damage, rank));
+    tooltip = tooltip.replace(/PROC%/g, this.getValue(this.proc, rank));
     tooltip = tooltip.replace(/RANGE2/g, this.getValue(this.range2, rank));
     tooltip = tooltip.replace(/RANGE/g, this.getValue(this.range, rank));
     tooltip = tooltip.replace(/VALUE/g, this.getValue(this.value, rank));
     tooltip = tooltip.replace(/DURATION/g, this.getValue(this.duration, rank));
+    tooltip = tooltip.replace(/COST100/g, this.getValue(this.cost100, rank));
+    tooltip = tooltip.replace(/COST1/g, this.getValue(this.cost1, rank));
+    tooltip = tooltip.replace(/REQUIRED/g, this.getValue(this.skill_requirement, rank));
+    tooltip += '\r\n Cooldown: ' + this.cooldown + 's';
     return tooltip;
   }
 
   getValue(attribute, rank): string {
     // rank 0 shows the same dmg as rank 1 - additionally make sure we cannot go out of bounds [0, max rank]
-    return attribute.split(',')[Math.max(rank - 1, 0)];
+    if (attribute) {
+      return attribute.split(',')[Math.max(rank - 1, 0)];
+    }
   }
 }
