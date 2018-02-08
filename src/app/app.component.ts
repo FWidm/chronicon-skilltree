@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import * as skills from '../assets/chronicon_0_73.json';
 import {ChroniconSkill} from './chronicon-skill';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -9,21 +9,41 @@ import {ChroniconSkill} from './chronicon-skill';
 })
 export class AppComponent {
   title = 'Tour of Heroes';
-  skill: ChroniconSkill = <ChroniconSkill>{
-    name: skills.tree.Berserker.Dragonkin.Boiling.name,
-    x: skills.tree.Berserker.Dragonkin.Boiling.x,
-    y: skills.tree.Berserker.Dragonkin.Boiling.y,
-    max: skills.tree.Berserker.Dragonkin.Boiling.max_rank,
-    image: null,
+  skills;
+  demo: ChroniconSkill = <ChroniconSkill>{
   };
-  skill2: ChroniconSkill = <ChroniconSkill>{
-    name: skills.tree.Berserker.Dragonkin.Dragmageddon.name,
-    x: skills.tree.Berserker.Dragonkin.Dragmageddon.x,
-    y: skills.tree.Berserker.Dragonkin.Dragmageddon.y,
-    max: skills.tree.Berserker.Dragonkin.Dragmageddon.max_rank,
-    image: null,
-  };
-  constructor() {
-    console.log(skills);
+  // skill2: ChroniconSkill = <ChroniconSkill>{
+  //   name: this.skills.tree.Berserker.Dragonkin.Dragmageddon.name,
+  //   x: this.skills.tree.Berserker.Dragonkin.Dragmageddon.x,
+  //   y: this.skills.tree.Berserker.Dragonkin.Dragmageddon.y,
+  //   max: this.skills.tree.Berserker.Dragonkin.Dragmageddon.max_rank,
+  //   image: null,
+  // };
+
+  constructor(private http: HttpClient) {
+    this.fetchTreeData();
+  }
+
+  loadTreeData() {
+    return this.http.get('../assets/chronicon_0_73.json');
+  }
+
+  fetchTreeData() {
+    this.loadTreeData()
+      .subscribe(data => {
+        this.updateSkills(data);
+      });
+  }
+
+  private updateSkills(data) {
+    console.log(data);
+    this.demo = data.tree.Berserker.Dragonkin.Dragmageddon;
+    // this.demo = <ChroniconSkill>{
+    //   name: data.tree.Berserker.Dragonkin.Dragmageddon.name,
+    //   x: data.tree.Berserker.Dragonkin.Dragmageddon.x,
+    //   y: data.tree.Berserker.Dragonkin.Dragmageddon.y,
+    //   max_level: data.tree.Berserker.Dragonkin.Dragmageddon.max_rank,
+    //   image: null,
+    // };
   }
 }
