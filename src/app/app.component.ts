@@ -9,37 +9,34 @@ import {forEach} from '@angular/router/src/utils/collection';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Tour of Heroes';
+  title = 'Tree demo';
   demo: ChroniconSkill = <ChroniconSkill>{};
-  skills: [ChroniconSkill];
+  skills;
+  version = 'VERSIONSTRING';
 
   constructor(private http: HttpClient) {
     this.fetchTreeData();
   }
 
   loadTreeData() {
-    return this.http.get('../assets/chronicon_0_73.json');
+    return this.http.get('./assets/chronicon_0_73.json');
   }
 
   fetchTreeData() {
     this.loadTreeData()
       .subscribe(data => {
-        this.updateSkills(data);
+        this.initializeApp(data);
       });
   }
 
-  private updateSkills(data) {
+  private initializeApp(data) {
     // get charnames
     console.log(data.tree);
     if (data == null) {
       return;
     }
-    // get tree names per char
-    for (const char in data.tree) {
-      console.log(data.tree[char]);
-    }
-
-
-    this.demo = data.tree.Berserker.Dragonkin.Dragmageddon;
+    this.skills = data.tree;
+    this.version = data.version;
+    this.demo = new ChroniconSkill(data.tree.Berserker.Dragonkin.Dragmageddon);
   }
 }
