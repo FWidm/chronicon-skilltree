@@ -85,6 +85,7 @@ export class ChroniconSkill {
   public getTooltip(rank): string {
     let tooltip = this.description;
     // todo: make more efficient replacement of values.
+    // todo: implement coloring - '|' = green, '~' = red
     if (tooltip) {
       tooltip = tooltip.replace(/XDAM/g, '');
       tooltip = tooltip.replace(/DAMAGE%/g, this.getValue(this.damage, rank));
@@ -101,7 +102,7 @@ export class ChroniconSkill {
     return tooltip;
   }
 
-  getValue(attribute, rank, divisor = null): string {
+  getValue(attribute, rank, divisor = null) {
     // rank 0 shows the same dmg as rank 1 - additionally make sure we cannot go out of bounds [0, max rank]
     if (attribute) {
       if (divisor) {
@@ -114,4 +115,7 @@ export class ChroniconSkill {
   }
 
 
+  isActive(): boolean {
+    return this.type.includes('Active');
+  }
 }

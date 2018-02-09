@@ -11,6 +11,7 @@ export class ChroniconSkillComponent implements OnInit, OnChanges {
   rank = 0;
   hovered = false;
   tooltip: string;
+  isActive: boolean;
 
   constructor() {
   }

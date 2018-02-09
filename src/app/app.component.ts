@@ -13,6 +13,9 @@ export class AppComponent implements OnChanges {
   demo: ChroniconSkill = <ChroniconSkill>{
     image: './assets/img.png'
   };
+  demo2: ChroniconSkill = <ChroniconSkill>{
+    image: './assets/img.png'
+  };
   skills;
   version = 'VERSIONSTRING';
 
@@ -60,5 +63,6 @@ export class AppComponent implements OnChanges {
     this.skills = skillList;
     console.log(skillList);
     this.demo = new ChroniconSkill(data.tree.Berserker.Dragonkin.Dragmageddon, 'assets/img.png');
+    this.demo2 = new ChroniconSkill(data.tree.Berserker.Dragonkin.Fissures, 'assets/img.png');
   }
 }

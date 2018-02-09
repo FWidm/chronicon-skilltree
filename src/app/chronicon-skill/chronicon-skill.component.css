@@ -22,9 +22,7 @@
   z-index: 1;
   color: goldenrod;
   background-color: #222222;
-  border-radius: 50%;
   text-align: center;
-
 }
 
 .chronicon-skill-name {
@@ -48,4 +46,8 @@
 
 .golden-frame-thin{
   border: goldenrod 1px solid;
+}
+
+.active-skill{
+  border-radius: 0;
 }

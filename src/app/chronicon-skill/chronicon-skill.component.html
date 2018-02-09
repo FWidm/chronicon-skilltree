@@ -6,7 +6,8 @@
 
   <button [style.background-image]="'url('+chroniconSkill.image + ')'"
           [style.backgroundSize]="'cover'"
-          (mouseenter)="hovered=true;" (mouseleave)="hovered=false;" (click)="onClick($event)"
+          [ngClass]="{'active-skill': chroniconSkill.isActive() }"
+          (mouseenter)=" hovered=true;" (mouseleave)="hovered=false;" (click)="onClick($event)"
           class="chronicon-skill-button golden-frame">
   </button>
   <!--<span class="chronicon-skill-name">{{chroniconSkill.name }}</span>-->
