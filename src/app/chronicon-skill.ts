@@ -51,10 +51,10 @@ export class ChroniconSkill {
     this.name = jsonObj.name;
     this.x = jsonObj.x;
     this.y = jsonObj.y;
-    this.image = image;
+    this.skill_requirement = jsonObj.skill_requirement;
+
     this.max_rank = jsonObj.max_rank;
     this.effect = jsonObj.effect;
-    this.skill_requirement = jsonObj.skill_requirement;
     this.damage = jsonObj.damage;
     this.family = jsonObj.family;
     this.min_level = jsonObj.min_level;
@@ -69,6 +69,8 @@ export class ChroniconSkill {
     this.range2 = jsonObj.range2;
     this.range = jsonObj.range;
     this.value = jsonObj.value;
+    this.image = image;
+
   }
 
   /*
@@ -102,7 +104,7 @@ export class ChroniconSkill {
     return tooltip;
   }
 
-  getValue(attribute, rank, divisor = null) {
+  public getValue(attribute, rank, divisor = null) {
     // rank 0 shows the same dmg as rank 1 - additionally make sure we cannot go out of bounds [0, max rank]
     if (attribute) {
       if (divisor) {
@@ -115,7 +117,7 @@ export class ChroniconSkill {
   }
 
 
-  isActive(): boolean {
+  public isActive(): boolean {
     return this.type.includes('Active');
   }
 }

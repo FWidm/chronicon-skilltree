@@ -11,7 +11,6 @@ export class ChroniconSkillComponent implements OnInit, OnChanges {
   rank = 0;
   hovered = false;
   tooltip: string;
-  isActive: boolean;
 
   constructor() {
   }
@@ -21,11 +20,15 @@ export class ChroniconSkillComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     // console.log(this.chroniconSkill);
-    if (this.chroniconSkill instanceof ChroniconSkill) {
+    if (this.isChroniconSkill()) {
       // console.log(this.chroniconSkill.constructor.name);
       this.tooltip = this.chroniconSkill.getTooltip(this.rank);
     }
 
+  }
+
+  isChroniconSkill() {
+    return this.chroniconSkill instanceof ChroniconSkill;
   }
 
   onClick(event) {

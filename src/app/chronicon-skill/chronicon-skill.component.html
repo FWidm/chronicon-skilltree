@@ -1,35 +1,36 @@
+<div *ngIf="isChroniconSkill()">
+  <div class="chronicon-skill">
+    <div class="chronicon-skill-count golden-frame-thin">
+      <span class="centering">{{rank}}</span>
+    </div>
 
-<div class="chronicon-skill" *ngIf="chroniconSkill">
-  <div class="chronicon-skill-count golden-frame-thin">
-    <span class="centering">{{rank}}</span>
+    <button [style.background-image]="'url('+chroniconSkill.image + ')'"
+            [style.backgroundSize]="'cover'"
+            [ngClass]="{'active-skill': chroniconSkill.isActive() }"
+            (mouseenter)=" hovered=true;" (mouseleave)="hovered=false;" (click)="onClick($event)"
+            class="chronicon-skill-button golden-frame">
+    </button>
+    <!--<span class="chronicon-skill-name">{{chroniconSkill.name }}</span>-->
   </div>
 
-  <button [style.background-image]="'url('+chroniconSkill.image + ')'"
-          [style.backgroundSize]="'cover'"
-          [ngClass]="{'active-skill': chroniconSkill.isActive() }"
-          (mouseenter)=" hovered=true;" (mouseleave)="hovered=false;" (click)="onClick($event)"
-          class="chronicon-skill-button golden-frame">
-  </button>
-  <!--<span class="chronicon-skill-name">{{chroniconSkill.name }}</span>-->
-</div>
+  <div class="chronicon-skill-tooltip golden-frame" *ngIf="hovered">
+    <h4>{{chroniconSkill.name}}</h4>
 
-<div class="chronicon-skill-tooltip golden-frame" *ngIf="hovered">
-  <h4>{{chroniconSkill.name}}</h4>
+    <div *ngIf="chroniconSkill.element">
+      <p>Element: {{chroniconSkill.element}}</p>
+    </div>
+    <div *ngIf="chroniconSkill.family!='None'">
+      <p>Family: {{chroniconSkill.family}}</p>
+    </div>
 
-  <div *ngIf="chroniconSkill.element">
-    <p>Element: {{chroniconSkill.element}}</p>
-  </div>
-  <div *ngIf="chroniconSkill.family!='None'">
-    <p>Family: {{chroniconSkill.family}}</p>
-  </div>
+    <p>{{tooltip}}</p>
+    <div *ngIf="chroniconSkill.max_rank">
+      <p>Maximum Rank: {{chroniconSkill.max_rank}}</p>
+    </div>
+    <!-- Hide if cooldown is undefined-->
+    <div *ngIf="chroniconSkill.cooldown">
+      <p>Cooldown: {{chroniconSkill.cooldown}}</p>
+    </div>
 
-  <p>{{tooltip}}</p>
-  <div *ngIf="chroniconSkill.max_rank">
-    <p>Maximum Rank: {{chroniconSkill.max_rank}}</p>
   </div>
-  <!-- Hide if cooldown is undefined-->
-  <div *ngIf="chroniconSkill.cooldown">
-    <p>Cooldown: {{chroniconSkill.cooldown}}</p>
-  </div>
-
 </div>

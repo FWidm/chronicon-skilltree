@@ -47,19 +47,18 @@ export class AppComponent implements OnChanges {
     this.skills = data.tree;
     this.version = data.version;
     const skillList = [];
-    // for (const character in this.skills) {
-    //   if (this.skills.hasOwnProperty(character)) {
-        for (const tree in this.skills['Berserker']) {
-          if (this.skills['Berserker'].hasOwnProperty(tree)) {
-            for (const skill in this.skills['Berserker'][tree]) {
-              if (this.skills['Berserker'][tree].hasOwnProperty(skill)) {
-                skillList.push(new ChroniconSkill(this.skills['Berserker'][tree][skill], 'assets/img.png'));
-              }
-            }
-          }
-        }
-      // }
-    // }
+
+    const dragonkin = this.skills['Berserker']['Dragonkin'];
+    for (const skill in dragonkin) {
+      if (dragonkin.hasOwnProperty(skill)) {
+        console.log(skill);
+        skillList.push(new ChroniconSkill(dragonkin[skill], 'assets/img.png'));
+      }
+    }
+    skillList.sort(function(a, b) {
+      return a.y - b.y  ||  a.x - b.x;
+    });
+    // todo: create a list ordered by x, then y => add in empty divs to display holes
     this.skills = skillList;
     console.log(skillList);
     this.demo = new ChroniconSkill(data.tree.Berserker.Dragonkin.Dragmageddon, 'assets/img.png');
