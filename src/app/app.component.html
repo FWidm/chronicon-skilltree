@@ -31,28 +31,48 @@ Passive Skill:
 <!--</li>-->
 <!--</ul>-->
 
-<div class="grid">
-  <div class="grid-cell link link-horizontal">x</div>
-  <div class="grid-cell link link-vertical">x</div>
-  <div class="grid-cell link link-left">x</div>
-  <div class="grid-cell link link-right">x</div>
-  <div class="grid-cell link link-up">x</div>
-  <div class="grid-cell link link-down">x</div>
-  <div class="grid-cell ">x</div>
-  <div class="grid-cell link link-left-up">x</div>
-  <div class="grid-cell link link-left-down">x</div>
-  <div class="grid-cell link link-right-up">x</div>
-  <div class="grid-cell link link-right-down">x</div>
-  <div class="grid-cell ">x</div>
-  <div class="grid-cell link link-horizontal-left-up">x</div>
-  <div class="grid-cell link link-horizontal-left-down">x</div>
-  <div class="grid-cell link link-horizontal-right-up">x</div>
-  <div class="grid-cell link link-horizontal-right-down">x</div>
-  <div class="grid-cell ">x</div>
-  <div class="grid-cell link link-horizontal-left-up-down">x</div>
-  <div class="grid-cell link link-horizontal-right-up-down">x</div>
+<!--<div class="grid">-->
+<!--<div class="grid-cell link link-horizontal">x</div>-->
+<!--<div class="grid-cell link link-vertical">x</div>-->
+<!--<div class="grid-cell link link-left">x</div>-->
+<!--<div class="grid-cell link link-right">x</div>-->
+<!--<div class="grid-cell link link-up">x</div>-->
+<!--<div class="grid-cell link link-down">x</div>-->
+<!--<div class="grid-cell ">x</div>-->
+<!--<div class="grid-cell link link-left-up">x</div>-->
+<!--<div class="grid-cell link link-left-down">x</div>-->
+<!--<div class="grid-cell link link-right-up">x</div>-->
+<!--<div class="grid-cell link link-right-down">x</div>-->
+<!--<div class="grid-cell ">x</div>-->
+<!--<div class="grid-cell link link-horizontal-left-up">x</div>-->
+<!--<div class="grid-cell link link-horizontal-left-down">x</div>-->
+<!--<div class="grid-cell link link-horizontal-right-up">x</div>-->
+<!--<div class="grid-cell link link-horizontal-right-down">x</div>-->
+<!--<div class="grid-cell ">x</div>-->
+<!--<div class="grid-cell link link-horizontal-left-up-down">x</div>-->
+<!--<div class="grid-cell link link-horizontal-right-up-down">x</div>-->
+<!--</div>-->
+
+<hr>
+<div class="tree2">
+  <div class="demo" *ngFor="let skill of skills">
+    <app-chronicon-skill [chroniconSkill]="skill"
+                         [style.left.px]="20+80*skill.x"
+                         [style.top.px]="300+70*skill.y"
+                         style="position: absolute;">
+    </app-chronicon-skill>
+  </div>
 </div>
 
 <hr>
-<div class="demo" >
+
+<div class="tree2">
+  <div class="demo" *ngFor="let skill of skills2">
+    <app-chronicon-skill [chroniconSkill]="skill"
+                         [style.left.px]="20+80*skill.x"
+                         [style.top.px]="1000+70*skill.y"
+                         style="position: absolute;">
+    </app-chronicon-skill>
+  </div>
 </div>
+
