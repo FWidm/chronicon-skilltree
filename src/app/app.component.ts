@@ -2,6 +2,8 @@ import {Component, OnChanges, SimpleChanges} from '@angular/core';
 import {ChroniconSkill} from './chronicon-skill';
 import {HttpClient} from '@angular/common/http';
 import {forEach} from '@angular/router/src/utils/collection';
+import {Tile} from './tile';
+import {Connector} from './connector';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +19,7 @@ export class AppComponent implements OnChanges {
     image: './assets/img.png'
   };
   skills;
-  skills2;
+  connectors;
   version = 'VERSIONSTRING';
 
   constructor(private http: HttpClient) {
@@ -39,6 +41,7 @@ export class AppComponent implements OnChanges {
       });
   }
 
+
   private initializeApp(data) {
     // get charnames
     console.log(data.tree);
@@ -48,33 +51,37 @@ export class AppComponent implements OnChanges {
     const skills = data.tree;
     this.version = data.version;
     let skillList = [];
+    let connectorList = [];
 
     const dragonkin = skills['Berserker']['Dragonkin'];
     for (const skill in dragonkin) {
       if (dragonkin.hasOwnProperty(skill)) {
         console.log(skill);
-        skillList.push(new ChroniconSkill(dragonkin[skill], '.'));
+        const chroniconSkill = new ChroniconSkill(dragonkin[skill], '.');
+        skillList.push(chroniconSkill);
+        if (chroniconSkill.skill_requirement !== 'none') {
+          const split = chroniconSkill.skill_requirement.split(',');
+          const required = skills['Berserker']['Dragonkin'][split[0]];
+          connectorList.push(new Connector(new Tile(required.x, required.y), chroniconSkill));
+        }
       }
     }
-    skillList.sort(function (a, b) {
-      return a.y - b.y || a.x - b.x;
-    });
+    skillList.sort(ChroniconSkill.compareXYCoordinates());
     // todo: create a list ordered by x, then y => add in empty divs to display holes
     this.skills = skillList;
+    this.connectors = connectorList;
+    console.log(this.connectors);
 
-    skillList = [];
-    const sky_lord = skills['Berserker']['Frostborn'];
-    for (const skill in sky_lord) {
-      if (sky_lord.hasOwnProperty(skill)) {
-        console.log(skill);
-        skillList.push(new ChroniconSkill(sky_lord[skill], '.'));
-      }
-    }
-    skillList.sort(function (a, b) {
-      return a.y - b.y || a.x - b.x;
-    });
-    // todo: create a list ordered by x, then y => add in empty divs to display holes
-    this.skills2 = skillList;
+    // skillList = [];
+    // const sky_lord = skills['Berserker']['Frostborn'];
+    // for (const skill in sky_lord) {
+    //   if (sky_lord.hasOwnProperty(skill)) {
+    //     console.log(skill);
+    //     skillList.push(new ChroniconSkill(sky_lord[skill], '.'));
+    //   }
+    // }
+    // skillList.sort(ChroniconSkill.compareXYCoordinates());
+    // this.skills2 = skillList;
 
     console.log(skillList);
 

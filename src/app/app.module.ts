@@ -6,13 +6,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { ChroniconSkillComponent } from './chronicon-skill/chronicon-skill.component';
 import { FormsModule } from '@angular/forms';
-import {CommonModule} from '@angular/common'; // <-- NgModel lives here
+import {CommonModule} from '@angular/common';
+import { ConnectorComponent } from './connector/connector.component'; // <-- NgModel lives here
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ChroniconSkillComponent
+    ChroniconSkillComponent,
+    ConnectorComponent
   ],
   imports: [
     BrowserModule,

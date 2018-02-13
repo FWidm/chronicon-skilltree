@@ -1,5 +1,6 @@
 import {Input} from '@angular/core';
 import {el} from '@angular/platform-browser/testing/src/browser_util';
+import {Tile} from './tile';
 
 /*
 Number of attributes on the skills.
@@ -24,8 +25,7 @@ Number of attributes on the skills.
  'x': 639,
  'y': 639}
  */
-export class ChroniconSkill {
-  image: string;
+export class ChroniconSkill extends Tile {
   cooldown: string;
   cost1: string;
   cost100: string;
@@ -44,13 +44,17 @@ export class ChroniconSkill {
   skill_requirement: string;
   type: string;
   value: string;
-  x: number;
-  y: number;
 
-  constructor(jsonObj: any, image = null) {
+
+  public static compareXYCoordinates() {
+    return function (a, b) {
+      return a.y - b.y || a.x - b.x;
+    };
+  }
+
+  constructor(jsonObj: any, image: string) {
+    super(jsonObj.x, jsonObj.y, image);
     this.name = jsonObj.name;
-    this.x = jsonObj.x;
-    this.y = jsonObj.y;
     this.skill_requirement = jsonObj.skill_requirement;
 
     this.max_rank = jsonObj.max_rank;
@@ -69,8 +73,6 @@ export class ChroniconSkill {
     this.range2 = jsonObj.range2;
     this.range = jsonObj.range;
     this.value = jsonObj.value;
-    this.image = image;
-
   }
 
   /*
@@ -118,6 +120,8 @@ export class ChroniconSkill {
 
 
   public isActive(): boolean {
-    return this.type.includes('Active');
+    return !this.type.includes('Passive');
   }
+
+
 }

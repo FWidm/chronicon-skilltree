@@ -55,7 +55,15 @@ Passive Skill:
 
 <hr>
 <div class="tree2">
-  <div class="demo" *ngFor="let skill of skills">
+
+  <div class="connector" *ngFor="let connector of connectors">
+    <app-connector [connector]="connector"
+                   [style.left.px]="52+80*connector.from.x"
+                   [style.top.px]="322+70*connector.from.y"
+                   style="position: absolute;">
+    </app-connector>
+  </div>
+  <div class="skill" *ngFor="let skill of skills">
     <app-chronicon-skill [chroniconSkill]="skill"
                          [style.left.px]="20+80*skill.x"
                          [style.top.px]="300+70*skill.y"
@@ -66,13 +74,13 @@ Passive Skill:
 
 <hr>
 
-<div class="tree2">
-  <div class="demo" *ngFor="let skill of skills2">
-    <app-chronicon-skill [chroniconSkill]="skill"
-                         [style.left.px]="20+80*skill.x"
-                         [style.top.px]="1000+70*skill.y"
-                         style="position: absolute;">
-    </app-chronicon-skill>
-  </div>
-</div>
+<!--<div class="tree2">-->
+<!--<div class="demo" *ngFor="let skill of skills2">-->
+<!--<app-chronicon-skill [chroniconSkill]="skill"-->
+<!--[style.left.px]="20+80*skill.x"-->
+<!--[style.top.px]="1000+70*skill.y"-->
+<!--style="position: absolute;">-->
+<!--</app-chronicon-skill>-->
+<!--</div>-->
+<!--</div>-->
 
