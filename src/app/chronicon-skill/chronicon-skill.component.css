@@ -51,3 +51,25 @@
 .active-skill{
   border-radius: 0;
 }
+
+.chronicon-skill-selection {
+  width: 64px;
+  height: 64px;
+  position: relative; /* All 'absolute'ly positioned elements are relative to this one */
+  background: black url("/assets/plus.svg");
+  background-size: cover;
+  border-radius: 10px;
+}
+
+.chronicon-skill-selection-tooltip {
+  top: -5px;
+  left: -5px;
+  height: 70px;
+  position: absolute;
+  z-index: 100;
+  background-color: black;
+  color: goldenrod;
+  width: 300px;
+  padding: 0px 5px 5px 5px;
+  border-radius: 10px;
+}

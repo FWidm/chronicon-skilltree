@@ -50,15 +50,24 @@ export class AppComponent implements OnChanges {
     }
     const skills = data.tree;
     this.version = data.version;
-    let skillList = [];
-    let connectorList = [];
+    const skillList = [];
+    const connectorList = [];
 
     const dragonkin = skills['Berserker']['Dragonkin'];
     for (const skill in dragonkin) {
       if (dragonkin.hasOwnProperty(skill)) {
-        console.log(skill);
         const chroniconSkill = new ChroniconSkill(dragonkin[skill], '.');
-        skillList.push(chroniconSkill);
+        const previousSkill = skillList.filter(tmpSkill => tmpSkill.x === chroniconSkill.x && tmpSkill.y === chroniconSkill.y);
+        console.log(previousSkill);
+
+        if (previousSkill.length > 0) {
+          previousSkill[0].alternatives.push(chroniconSkill);
+          console.log(previousSkill[0].alternatives);
+
+        } else {
+          skillList.push(chroniconSkill);
+        }
+
         if (chroniconSkill.skill_requirement !== 'none') {
           const split = chroniconSkill.skill_requirement.split(',');
           const required = skills['Berserker']['Dragonkin'][split[0]];
@@ -71,17 +80,6 @@ export class AppComponent implements OnChanges {
     this.skills = skillList;
     this.connectors = connectorList;
     console.log(this.connectors);
-
-    // skillList = [];
-    // const sky_lord = skills['Berserker']['Frostborn'];
-    // for (const skill in sky_lord) {
-    //   if (sky_lord.hasOwnProperty(skill)) {
-    //     console.log(skill);
-    //     skillList.push(new ChroniconSkill(sky_lord[skill], '.'));
-    //   }
-    // }
-    // skillList.sort(ChroniconSkill.compareXYCoordinates());
-    // this.skills2 = skillList;
 
     console.log(skillList);
 

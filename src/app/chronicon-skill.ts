@@ -3,7 +3,7 @@ import {el} from '@angular/platform-browser/testing/src/browser_util';
 import {Tile} from './tile';
 
 /*
-Number of attributes on the skills.
+Number of attributes on the skillSlot.
 {'cooldown': 187,
  'cost1': 225,
  'cost100': 225,
@@ -44,7 +44,7 @@ export class ChroniconSkill extends Tile {
   skill_requirement: string;
   type: string;
   value: string;
-
+  alternatives: Array<ChroniconSkill>;
 
   public static compareXYCoordinates() {
     return function (a, b) {
@@ -73,6 +73,7 @@ export class ChroniconSkill extends Tile {
     this.range2 = jsonObj.range2;
     this.range = jsonObj.range;
     this.value = jsonObj.value;
+    this.alternatives = [];
   }
 
   /*

@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ChroniconSkill} from '../chronicon-skill';
 
 @Component({
@@ -6,11 +6,11 @@ import {ChroniconSkill} from '../chronicon-skill';
   templateUrl: './chronicon-skill.component.html',
   styleUrls: ['./chronicon-skill.component.css']
 })
-export class ChroniconSkillComponent implements OnInit, OnChanges {
-  @Input() chroniconSkill: ChroniconSkill;
+export class ChroniconSkillComponent implements OnInit {
+  @Input() skillSlot: ChroniconSkill;
+  @Input() choosableSkills: [ChroniconSkill];
   rank = 0;
   hovered = false;
-  tooltip: string;
 
   constructor() {
   }
@@ -18,20 +18,11 @@ export class ChroniconSkillComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    // console.log(this.chroniconSkill);
-    if (this.isChroniconSkill()) {
-      // console.log(this.chroniconSkill.constructor.name);
-      this.tooltip = this.chroniconSkill.getTooltip(this.rank);
-    }
-
-  }
-
   isChroniconSkill() {
-    return this.chroniconSkill instanceof ChroniconSkill;
+    return this.skillSlot instanceof ChroniconSkill;
   }
 
-  onClick(event) {
+  levelUp(event) {
     let modifier = 1;
     if (event.ctrlKey) {
       modifier = 5;
@@ -43,12 +34,15 @@ export class ChroniconSkillComponent implements OnInit, OnChanges {
       }
     } else {
 
-      if (this.rank <= this.chroniconSkill.max_rank) {
-        this.rank = Math.min(this.chroniconSkill.max_rank, this.rank + modifier);
+      if (this.rank <= this.skillSlot.max_rank) {
+        this.rank = Math.min(this.skillSlot.max_rank, this.rank + modifier);
       }
     }
+  }
 
-    this.tooltip = this.chroniconSkill.getTooltip(this.rank);
-
+  selectSkill(skill) {
+    this.skillSlot = skill;
+    this.choosableSkills.length = 0;
+    this.hovered = false;
   }
 }

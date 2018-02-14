@@ -1,37 +1,67 @@
-<div class="chronicon-skill" *ngIf="isChroniconSkill()">
-  <div class="skill">
-    <div class="chronicon-skill-count golden-frame-thin">
-      <span class="centering">{{rank}}</span>
+<div *ngIf="!choosableSkills || choosableSkills.length<1;then selected_skill else selection">
+
+</div>
+
+<ng-template #selected_skill>
+  <div class="chronicon-skill" *ngIf="isChroniconSkill()">
+    <div class="skill">
+      <div class="chronicon-skill-count golden-frame-thin">
+        <span class="centering">{{rank}}</span>
+      </div>
+
+      <button [style.background-image]="'url('+skillSlot.image + ')'"
+              [style.backgroundSize]="'cover'"
+              [ngClass]="{'active-skill': skillSlot.isActive() }"
+              (mouseenter)=" hovered=true;" (mouseleave)="hovered=false;" (click)="levelUp($event)"
+              class="chronicon-skill-button golden-frame">
+      </button>
+      <!--<span class="chronicon-skillSlot-name">{{skillSlot.name }}</span>-->
     </div>
 
-    <button [style.background-image]="'url('+chroniconSkill.image + ')'"
-            [style.backgroundSize]="'cover'"
-            [ngClass]="{'active-skill': chroniconSkill.isActive() }"
-            (mouseenter)=" hovered=true;" (mouseleave)="hovered=false;" (click)="onClick($event)"
-            class="chronicon-skill-button golden-frame">
-    </button>
-    <!--<span class="chronicon-skill-name">{{chroniconSkill.name }}</span>-->
+
+  </div>
+  <div class="chronicon-skill-tooltip golden-frame" *ngIf="hovered">
+    <h4>{{skillSlot.name}}</h4>
+
+    <div *ngIf="skillSlot.element">
+      <p>Element: {{skillSlot.element}}</p>
+    </div>
+    <div *ngIf="skillSlot.family!='None'">
+      <p>Family: {{skillSlot.family}}</p>
+    </div>
+
+    <p>{{skillSlot.getTooltip(rank)}}</p>
+
+    <div *ngIf="skillSlot.max_rank">
+      <p>Maximum Rank: {{skillSlot.max_rank}}</p>
+    </div>
+    <!-- Hide if cooldown is undefined-->
+    <div *ngIf="skillSlot.cooldown">
+      <p>Cooldown: {{skillSlot.cooldown}}</p>
+    </div>
+
+  </div>
+</ng-template>
+<ng-template #selection>
+  <div class="chronicon-skill-selection golden-frame"
+       (mouseenter)=" hovered=true;" (mouseleave)="hovered=false;"
+       (click)="hovered=false;"
+  >
+    <div class="chronicon-skill-selection-tooltip  golden-frame" *ngIf="hovered"
+         (mouseenter)=" hovered=true;" (mouseleave)="hovered=false;">
+      <button [style.background-image]="'url('+skillSlot.image + ')'"
+              [style.backgroundSize]="'cover'"
+              (click)="selectSkill(skillSlot)"
+              class="golden-frame">{{skillSlot.name}}
+      </button>
+      
+      <button *ngFor="let skill of choosableSkills"
+              [style.background-image]="'url('+skillSlot.image + ')'"
+              [style.backgroundSize]="'cover'"
+              (click)="selectSkill(skill)"
+              class="golden-frame">{{skill.name}}
+      </button>
+    </div>
   </div>
 
-
-</div>
-<div class="chronicon-skill-tooltip golden-frame" *ngIf="hovered">
-  <h4>{{chroniconSkill.name}}</h4>
-
-  <div *ngIf="chroniconSkill.element">
-    <p>Element: {{chroniconSkill.element}}</p>
-  </div>
-  <div *ngIf="chroniconSkill.family!='None'">
-    <p>Family: {{chroniconSkill.family}}</p>
-  </div>
-
-  <p>{{tooltip}}</p>
-  <div *ngIf="chroniconSkill.max_rank">
-    <p>Maximum Rank: {{chroniconSkill.max_rank}}</p>
-  </div>
-  <!-- Hide if cooldown is undefined-->
-  <div *ngIf="chroniconSkill.cooldown">
-    <p>Cooldown: {{chroniconSkill.cooldown}}</p>
-  </div>
-
-</div>
+</ng-template>

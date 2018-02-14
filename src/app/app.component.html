@@ -20,14 +20,14 @@
 
 <h1>{{title}} - V. {{version}}</h1>
 Active Skill:
-<app-chronicon-skill [chroniconSkill]="demo"></app-chronicon-skill>
+<app-chronicon-skill [skillSlot]="demo"></app-chronicon-skill>
 Passive Skill:
-<app-chronicon-skill [chroniconSkill]="demo2"></app-chronicon-skill>
-<!--<app-chronicon-skill [chronicon_skill]="skills[1]"></app-chronicon-skill>-->
+<app-chronicon-skill [skillSlot]="demo2"></app-chronicon-skill>
+<!--<app-chronicon-skillSlot [chronicon_skill]="skillSlot[1]"></app-chronicon-skillSlot>-->
 <hr>
-<!--<ul class="skills">-->
-<!--<li  *ngFor="let skill of skills">-->
-<!--<app-chronicon-skill [chroniconSkill]="skill"></app-chronicon-skill>-->
+<!--<ul class="skillSlot">-->
+<!--<li  *ngFor="let skillSlot of skillSlot">-->
+<!--<app-chronicon-skillSlot [skillSlot]="skillSlot"></app-chronicon-skillSlot>-->
 <!--</li>-->
 <!--</ul>-->
 
@@ -63,8 +63,11 @@ Passive Skill:
                    style="position: absolute;">
     </app-connector>
   </div>
+  <!--                         [choosableSkills]="[skill,skill]"
+-->
   <div class="skill" *ngFor="let skill of skills">
-    <app-chronicon-skill [chroniconSkill]="skill"
+    <app-chronicon-skill [skillSlot]="skill"
+                         [choosableSkills]="skill.alternatives"
                          [style.left.px]="20+80*skill.x"
                          [style.top.px]="300+70*skill.y"
                          style="position: absolute;">
@@ -75,12 +78,12 @@ Passive Skill:
 <hr>
 
 <!--<div class="tree2">-->
-<!--<div class="demo" *ngFor="let skill of skills2">-->
-<!--<app-chronicon-skill [chroniconSkill]="skill"-->
-<!--[style.left.px]="20+80*skill.x"-->
-<!--[style.top.px]="1000+70*skill.y"-->
+<!--<div class="demo" *ngFor="let skillSlot of skills2">-->
+<!--<app-chronicon-skillSlot [skillSlot]="skillSlot"-->
+<!--[style.left.px]="20+80*skillSlot.x"-->
+<!--[style.top.px]="1000+70*skillSlot.y"-->
 <!--style="position: absolute;">-->
-<!--</app-chronicon-skill>-->
+<!--</app-chronicon-skillSlot>-->
 <!--</div>-->
 <!--</div>-->
 
