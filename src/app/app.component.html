@@ -52,24 +52,30 @@ Passive Skill:
 <!--<div class="grid-cell link link-horizontal-left-up-down">x</div>-->
 <!--<div class="grid-cell link link-horizontal-right-up-down">x</div>-->
 <!--</div>-->
-
 <hr>
-<div class="tree2">
+<select (change)="setCharacter($event.target.value)" [(ngModel)]="selectedChar" *ngIf="chars">
+  <option *ngFor="let c of chars" [ngValue]="c">{{c}}</option>
+</select>
+<hr>
+<select (change)="populateTree(selectedChar,$event.target.value.split(': ')[1])" [(ngModel)]="selectedTree" *ngIf="trees">
+  <option *ngFor="let c of trees" [ngValue]="c">{{c}}</option>
+</select>
+<hr>
 
-  <div class="connector" *ngFor="let connector of connectors">
-    <app-connector [connector]="connector"
-                   [style.left.px]="52+80*connector.from.x"
-                   [style.top.px]="322+70*connector.from.y"
+<div class="skill-tree">
+
+    <app-connector *ngFor="let connector of connectors"
+      [connector]="connector"
+                   [style.left.px]="52+90*connector.from.x"
+                   [style.top.px]="22+80*connector.from.y"
                    style="position: absolute;">
     </app-connector>
-  </div>
-  <!--                         [choosableSkills]="[skill,skill]"
--->
+
   <div class="skill" *ngFor="let skill of skills">
     <app-chronicon-skill [skillSlot]="skill"
                          [choosableSkills]="skill.alternatives"
-                         [style.left.px]="20+80*skill.x"
-                         [style.top.px]="300+70*skill.y"
+                         [style.left.px]="20+90*skill.x"
+                         [style.top.px]="80*skill.y"
                          style="position: absolute;">
     </app-chronicon-skill>
   </div>

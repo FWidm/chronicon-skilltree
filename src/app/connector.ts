@@ -18,7 +18,7 @@ export class Connector {
   }
 
   getWidth() {
-    const baseSize = 80;
+    const baseSize = 90;
     return Math.max(Math.abs(baseSize * (this.to.x - this.from.x)), Math.abs(baseSize * (this.to.y - this.from.y)));
   }
 

@@ -45,16 +45,15 @@
 <ng-template #selection>
   <div class="chronicon-skill-selection golden-frame"
        (mouseenter)=" hovered=true;" (mouseleave)="hovered=false;"
-       (click)="hovered=false;"
   >
     <div class="chronicon-skill-selection-tooltip  golden-frame" *ngIf="hovered"
-         (mouseenter)=" hovered=true;" (mouseleave)="hovered=false;">
+         (mouseleave)="hovered=false;">
       <button [style.background-image]="'url('+skillSlot.image + ')'"
               [style.backgroundSize]="'cover'"
               (click)="selectSkill(skillSlot)"
               class="golden-frame">{{skillSlot.name}}
       </button>
-      
+
       <button *ngFor="let skill of choosableSkills"
               [style.background-image]="'url('+skillSlot.image + ')'"
               [style.backgroundSize]="'cover'"
