@@ -5,6 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Todo
 - Add search function for nodes and their tooltip
 - Add functionalities to share trees via links
+- Tooltips should not leave the viewport!
 
 ## Development server
 
