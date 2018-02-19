@@ -1,11 +1,14 @@
 # ChroniconSkilltree
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.7.
+@Faust I'm putting a secret command (ctrl+s+j) in the game as of next update to print a json file with all skill data - should make your work easier :)
 
 ## Todo
 - Add search function for nodes and their tooltip
 - Add functionalities to share trees via links
 - Tooltips should not leave the viewport!
+- Switching between skills in one slot needs to be supported
+  - Show switcher if skill is levelled down to 0! (shift)
 
 ## Development server
 

@@ -1,4 +1,4 @@
-<div *ngIf="!choosableSkills || choosableSkills.length<1;then selected_skill else selection">
+<div *ngIf="chosen; then selected_skill else selection">
 
 </div>
 
@@ -48,14 +48,14 @@
   >
     <div class="chronicon-skill-selection-tooltip  golden-frame" *ngIf="hovered"
          (mouseleave)="hovered=false;">
-      <button [style.background-image]="'url('+skillSlot.image + ')'"
-              [style.backgroundSize]="'cover'"
-              (click)="selectSkill(skillSlot)"
-              class="golden-frame">{{skillSlot.name}}
-      </button>
+      <!--<button [style.background-image]="'url('+skillSlot.image + ')'"-->
+              <!--[style.backgroundSize]="'cover'"-->
+              <!--(click)="selectSkill(skillSlot)"-->
+              <!--class="golden-frame">{{skillSlot.name}}-->
+      <!--</button>-->
 
       <button *ngFor="let skill of choosableSkills"
-              [style.background-image]="'url('+skillSlot.image + ')'"
+              [style.background-image]="'url('+skill.image + ')'"
               [style.backgroundSize]="'cover'"
               (click)="selectSkill(skill)"
               class="golden-frame">{{skill.name}}
