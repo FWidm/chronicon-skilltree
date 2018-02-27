@@ -115,8 +115,9 @@ export class ChroniconSkill extends Tile {
     return tooltip;
   }
 
-  public filter(allowed: Array<String>) {
+  public filter(allowed: Array<string>) {
     return Object.keys(this)
+    // todo: try to remove the warning that string[] does not contain the "includes" method.
       .filter(key => allowed.includes(key))
       .reduce((obj, key) => {
         obj[key] = this[key];

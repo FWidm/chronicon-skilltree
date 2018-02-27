@@ -78,18 +78,25 @@ export class AppComponent implements OnChanges {
     if (!this.levelledSkills[this.selectedTree]) {
       this.levelledSkills[this.selectedTree] = {};
     }
-    this.levelledSkills[this.selectedTree][event.name] = event.filter(['name', 'rank']);
+    this.levelledSkills[this.selectedTree][event.name] = event.filter(['x', 'y', 'rank']);
     this.level = AppComponent.determineRequiredLevel(this.levelledSkills);
-
+    this.exportSkills();
 
   }
 
   exportSkills() {
-    console.log(this.levelledSkills);
-    // todo: export & import
+    console.log(this.levelledSkills[this.selectedTree]);
+    // delete rank 0 skills on export
+    for (const skill in this.levelledSkills[this.selectedTree]) {
+      if (this.levelledSkills[this.selectedTree].hasOwnProperty(skill)) {
+        console.log(skill);
+        if (this.levelledSkills[this.selectedTree][skill].rank <= 0) {
+          delete(this.levelledSkills[this.selectedTree][skill]);
+        }
+      }
+    }
     const b64 = LZString.compress(JSON.stringify(this.levelledSkills));
     console.log(b64);
-    console.log(LZString.decompress(b64));
   }
 
   loadSkills(compressed) {
