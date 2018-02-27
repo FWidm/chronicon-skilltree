@@ -7,14 +7,16 @@ import { AppComponent } from './app.component';
 import { ChroniconSkillComponent } from './chronicon-skill/chronicon-skill.component';
 import { FormsModule } from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import { ConnectorComponent } from './connector/connector.component'; // <-- NgModel lives here
+import { ConnectorComponent } from './connector/connector.component';
+import { SkilltreeComponent } from './skilltree/skilltree.component'; // <-- NgModel lives here
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ChroniconSkillComponent,
-    ConnectorComponent
+    ConnectorComponent,
+    SkilltreeComponent
   ],
   imports: [
     BrowserModule,

@@ -9,6 +9,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - Tooltips should not leave the viewport!
 - Switching between skills in one slot needs to be supported
   - Show switcher if skill is levelled down to 0! (shift)
+  - remove skill from dict if it was removed by this option.
 
 ## Development server
 

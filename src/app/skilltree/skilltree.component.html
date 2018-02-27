@@ -1,0 +1,19 @@
+<div class="skill-tree">
+  <app-connector *ngFor="let connector of connectors"
+                 [connector]="connector"
+                 [style.left.px]="52+90*connector.from.x"
+                 [style.top.px]="22+80*connector.from.y"
+                 style="position: absolute;">
+  </app-connector>
+
+  <div class="skill" *ngFor="let skill of skills">
+    <app-chronicon-skill [skill]="skill"
+                         [level]="level"
+                         [choosableSkills]="skill.alternatives"
+                         [style.left.px]="20+90*skill.x"
+                         [style.top.px]="80*skill.y"
+                         (getSkillStatus)="skillLevelUpCallback($event)"
+                         style="position: absolute;">
+    </app-chronicon-skill>
+  </div>
+</div>

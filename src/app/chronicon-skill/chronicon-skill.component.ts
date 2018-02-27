@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter} from '@angular/core';
 import {ChroniconSkill} from '../chronicon-skill';
 
 @Component({
@@ -8,9 +8,11 @@ import {ChroniconSkill} from '../chronicon-skill';
 })
 export class ChroniconSkillComponent implements OnInit, OnChanges {
 
-  @Input() skillSlot: ChroniconSkill;
+  @Input() skill: ChroniconSkill;
+  @Input() level: number;
   @Input() choosableSkills: [ChroniconSkill];
-  rank = 0;
+  @Output() getSkillStatus = new EventEmitter<ChroniconSkill>();
+
   hovered = false;
   chosen = false;
 
@@ -23,21 +25,26 @@ export class ChroniconSkillComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     // either no choosable skills or just one => skill is chosen per default
-    if (!this.choosableSkills || this.choosableSkills.length <= 1) {
+    if (!this.choosableSkills || this.choosableSkills.length < 1) {
       this.chosen = true;
+      return;
     }
     // initialize multiskills
-    if (this.choosableSkills && this.choosableSkills.length > 0 && this.skillSlot) {
-      this.choosableSkills.push(this.skillSlot);
-      this.skillSlot = null;
-      console.log(this);
+    if (!this.chosen && this.skill) {
+      this.choosableSkills.push(this.skill);
+      this.skill = null;
+      // console.log(this);
     }
   }
 
   isChroniconSkill() {
-    return this.skillSlot instanceof ChroniconSkill;
+    return this.skill instanceof ChroniconSkill;
   }
 
+  /**
+   * Level up a skill
+   * @param event
+   */
   levelUp(event) {
     let modifier = 1;
     if (event.ctrlKey) {
@@ -45,24 +52,38 @@ export class ChroniconSkillComponent implements OnInit, OnChanges {
     }
     // this.rank = Math.clamp
     if (event.shiftKey) {
-      if (this.rank >= 0) {
+      if (this.skill.rank >= 0) {
         // if the skill is delevelled while being at rank 0 - show the choose skill again.
-        if (this.rank === 0 && this.skillSlot.isActive()) {
+        if (this.skill.rank === 0 && this.skill.isActive()) {
           this.chosen = false;
         }
-        this.rank = Math.max(0, this.rank - modifier);
+        this.skill.rank = Math.max(0, this.skill.rank - modifier);
+        this.getSkillStatus.emit(this.skill);
       }
     } else {
+      if (this.level + modifier >= 100) {
+        // set the modifier to the maximum possible modifier, then add it
+        modifier = modifier - (this.level + modifier - 100);
+        this.skill.rank = Math.min(this.skill.max_rank, this.skill.rank + modifier);
+        this.getSkillStatus.emit(this.skill);
+        return;
+      }
+      if (this.skill.rank <= this.skill.max_rank) {
+        this.skill.rank = Math.min(this.skill.max_rank, this.skill.rank + modifier);
+        this.getSkillStatus.emit(this.skill);
 
-      if (this.rank <= this.skillSlot.max_rank) {
-        this.rank = Math.min(this.skillSlot.max_rank, this.rank + modifier);
       }
     }
   }
 
+  /**
+   * Select a skill from a multi select
+   * @param skill
+   */
   selectSkill(skill) {
-    this.skillSlot = skill;
+    this.skill = skill;
     this.chosen = true;
     this.hovered = false;
+    console.log('skill=' + this.skill.name + ' | chosen=' + this.chosen + ' | hovered=' + this.hovered);
   }
 }

@@ -1,5 +1,11 @@
 {
   "compileOnSave": false,
+  "files": [
+    "./node_modules/lz-string/typings/lz-string.d.ts"
+  ],
+  "include": [
+    "src/**/*"
+  ],
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -13,7 +19,7 @@
     ],
 
     "lib": [
-      "es2017",
+      "es7",
       "dom"
     ]
   }

@@ -877,6 +877,7 @@
           "family": "Magic",
           "min_level": "0",
           "range": "3.30,3.60,3.90,4.20,4.50",
+          "range": "3.30,3.60,3.90,4.20,4.50",
           "element": "Fire",
           "type": "Active skill",
           "description": "The Templar causes stars to fall over a large area, each dealing DAMAGE% XDAM FIRE damage on impact to all foes within |2 meters. Effect radius is RANGE meters, and lasts for DURATION seconds.",

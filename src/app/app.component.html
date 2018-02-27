@@ -1,95 +1,26 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<!--<div style="text-align:center">-->
-<!--<h1>-->
-<!--Welcome to {{ title }}!-->
-<!--</h1>-->
-<!--<img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">-->
-<!--</div>-->
-<!--<h2>Here are some links to help you start: </h2>-->
-<!--<ul>-->
-<!--<li>-->
-<!--<h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>-->
-<!--</li>-->
-<!--<li>-->
-<!--<h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>-->
-<!--</li>-->
-<!--<li>-->
-<!--<h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>-->
-<!--</li>-->
-<!--</ul>-->
-
 <h1>{{title}} - V. {{version}}</h1>
-Active Skill:
-<app-chronicon-skill [skillSlot]="demo"></app-chronicon-skill>
-Passive Skill:
-<app-chronicon-skill [skillSlot]="demo2"></app-chronicon-skill>
-<!--<app-chronicon-skillSlot [chronicon_skill]="skillSlot[1]"></app-chronicon-skillSlot>-->
-<hr>
-<!--<ul class="skillSlot">-->
-<!--<li  *ngFor="let skillSlot of skillSlot">-->
-<!--<app-chronicon-skillSlot [skillSlot]="skillSlot"></app-chronicon-skillSlot>-->
-<!--</li>-->
-<!--</ul>-->
-
-<!--<div class="grid">-->
-<!--<div class="grid-cell link link-horizontal">x</div>-->
-<!--<div class="grid-cell link link-vertical">x</div>-->
-<!--<div class="grid-cell link link-left">x</div>-->
-<!--<div class="grid-cell link link-right">x</div>-->
-<!--<div class="grid-cell link link-up">x</div>-->
-<!--<div class="grid-cell link link-down">x</div>-->
-<!--<div class="grid-cell ">x</div>-->
-<!--<div class="grid-cell link link-left-up">x</div>-->
-<!--<div class="grid-cell link link-left-down">x</div>-->
-<!--<div class="grid-cell link link-right-up">x</div>-->
-<!--<div class="grid-cell link link-right-down">x</div>-->
-<!--<div class="grid-cell ">x</div>-->
-<!--<div class="grid-cell link link-horizontal-left-up">x</div>-->
-<!--<div class="grid-cell link link-horizontal-left-down">x</div>-->
-<!--<div class="grid-cell link link-horizontal-right-up">x</div>-->
-<!--<div class="grid-cell link link-horizontal-right-down">x</div>-->
-<!--<div class="grid-cell ">x</div>-->
-<!--<div class="grid-cell link link-horizontal-left-up-down">x</div>-->
-<!--<div class="grid-cell link link-horizontal-right-up-down">x</div>-->
-<!--</div>-->
-<hr>
-<select (change)="setCharacter($event.target.value)" [(ngModel)]="selectedChar" *ngIf="chars">
-  <option *ngFor="let c of chars" [ngValue]="c">{{c}}</option>
-</select>
-<hr>
-<select (change)="populateTree(selectedChar,$event.target.value.split(': ')[1])" [(ngModel)]="selectedTree" *ngIf="trees">
-  <option *ngFor="let c of trees" [ngValue]="c">{{c}}</option>
-</select>
-<hr>
-
-<div class="skill-tree">
-
-    <app-connector *ngFor="let connector of connectors"
-      [connector]="connector"
-                   [style.left.px]="52+90*connector.from.x"
-                   [style.top.px]="22+80*connector.from.y"
-                   style="position: absolute;">
-    </app-connector>
-
-  <div class="skill" *ngFor="let skill of skills">
-    <app-chronicon-skill [skillSlot]="skill"
-                         [choosableSkills]="skill.alternatives"
-                         [style.left.px]="20+90*skill.x"
-                         [style.top.px]="80*skill.y"
-                         style="position: absolute;">
-    </app-chronicon-skill>
-  </div>
-</div>
 
 <hr>
 
-<!--<div class="tree2">-->
-<!--<div class="demo" *ngFor="let skillSlot of skills2">-->
-<!--<app-chronicon-skillSlot [skillSlot]="skillSlot"-->
-<!--[style.left.px]="20+80*skillSlot.x"-->
-<!--[style.top.px]="1000+70*skillSlot.y"-->
-<!--style="position: absolute;">-->
-<!--</app-chronicon-skillSlot>-->
-<!--</div>-->
-<!--</div>-->
+<label>
+  <select (change)="setCharacter($event.target.value.split(': ')[1])" [(ngModel)]="selectedChar" *ngIf="chars">
+    <option *ngFor="let c of chars" [ngValue]="c">{{c}}</option>
+  </select>
+</label>
+<hr>
+<label>
+  <select (change)="selectedTree=$event.target.value.split(': ')[1]" [(ngModel)]="selectedTree" *ngIf="trees">
+    <option *ngFor="let c of trees" [ngValue]="c">{{c}}</option>
+  </select>
+</label>
+<hr>
 
+<app-skilltree [data]="data"
+               [charName]="selectedChar"
+               [treeName]="selectedTree"
+               [level]="level"
+               (getSkillStatus)="skillLevelUpCallback($event)">
+</app-skilltree>
+
+<div>Load: <input type="text"
+                  (input)="loadSkills($event.target.value)"></div>

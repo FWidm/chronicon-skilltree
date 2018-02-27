@@ -3,7 +3,7 @@ import {el} from '@angular/platform-browser/testing/src/browser_util';
 import {Tile} from './tile';
 
 /*
-Number of attributes on the skillSlot.
+Number of attributes on the skill.
 {'cooldown': 187,
  'cost1': 225,
  'cost100': 225,
@@ -45,6 +45,7 @@ export class ChroniconSkill extends Tile {
   type: string;
   value: string;
   alternatives: Array<ChroniconSkill>;
+  rank: number;
 
   public static compareXYCoordinates() {
     return function (a, b) {
@@ -52,28 +53,35 @@ export class ChroniconSkill extends Tile {
     };
   }
 
-  constructor(jsonObj: any, image: string) {
-    super(jsonObj.x, jsonObj.y, image);
-    this.name = jsonObj.name;
-    this.skill_requirement = jsonObj.skill_requirement;
 
-    this.max_rank = jsonObj.max_rank;
-    this.effect = jsonObj.effect;
-    this.damage = jsonObj.damage;
-    this.family = jsonObj.family;
-    this.min_level = jsonObj.min_level;
-    this.element = jsonObj.element;
-    this.type = jsonObj.type;
-    this.description = jsonObj.description;
-    this.cooldown = jsonObj.cooldown;
-    this.cost1 = jsonObj.cost1;
-    this.cost100 = jsonObj.cost100;
-    this.duration = jsonObj.duration;
-    this.proc = jsonObj.proc;
-    this.range2 = jsonObj.range2;
-    this.range = jsonObj.range;
-    this.value = jsonObj.value;
-    this.alternatives = [];
+  constructor(x: number | string, y: number | string, image: string, name: string, rank: number) {
+    super(x, y, image);
+    this.name = name;
+    this.rank = rank;
+  }
+
+  static fromJson(jsonObj: any, image: string, rank = 0) {
+    const obj = new ChroniconSkill(jsonObj.x, jsonObj.y, image, jsonObj.name, rank);
+    obj.skill_requirement = jsonObj.skill_requirement;
+
+    obj.max_rank = jsonObj.max_rank;
+    obj.effect = jsonObj.effect;
+    obj.damage = jsonObj.damage;
+    obj.family = jsonObj.family;
+    obj.min_level = jsonObj.min_level;
+    obj.element = jsonObj.element;
+    obj.type = jsonObj.type;
+    obj.description = jsonObj.description;
+    obj.cooldown = jsonObj.cooldown;
+    obj.cost1 = jsonObj.cost1;
+    obj.cost100 = jsonObj.cost100;
+    obj.duration = jsonObj.duration;
+    obj.proc = jsonObj.proc;
+    obj.range2 = jsonObj.range2;
+    obj.range = jsonObj.range;
+    obj.value = jsonObj.value;
+    obj.alternatives = [];
+    return obj;
   }
 
   /*
@@ -87,25 +95,35 @@ export class ChroniconSkill extends Tile {
  'VALUE': 94, 'VALUE%': 1, x
  'XDAM': 214}
    */
-  public getTooltip(rank): string {
+  public getTooltip(): string {
     let tooltip = this.description;
     // todo: make more efficient replacement of values.
     // todo: implement coloring - '|' = green, '~' = red
     if (tooltip) {
       tooltip = tooltip.replace(/XDAM/g, '');
-      tooltip = tooltip.replace(/DAMAGE%/g, this.getValue(this.damage, rank));
-      tooltip = tooltip.replace(/PROC/g, this.getValue(this.proc, rank, 100));
-      tooltip = tooltip.replace(/RANGE2/g, this.getValue(this.range2, rank));
-      tooltip = tooltip.replace(/RANGE/g, this.getValue(this.range, rank));
-      tooltip = tooltip.replace(/VALUE/g, this.getValue(this.value, rank));
-      tooltip = tooltip.replace(/DURATION/g, this.getValue(this.duration, rank));
-      tooltip = tooltip.replace(/COST100/g, this.getValue(this.cost100, rank));
-      tooltip = tooltip.replace(/COST1/g, this.getValue(this.cost1, rank));
+      tooltip = tooltip.replace(/DAMAGE%/g, this.getValue(this.damage, this.rank));
+      tooltip = tooltip.replace(/PROC/g, this.getValue(this.proc, this.rank, 100));
+      tooltip = tooltip.replace(/RANGE2/g, this.getValue(this.range2, this.rank));
+      tooltip = tooltip.replace(/RANGE/g, this.getValue(this.range, this.rank));
+      tooltip = tooltip.replace(/VALUE/g, this.getValue(this.value, this.rank));
+      tooltip = tooltip.replace(/DURATION/g, this.getValue(this.duration, this.rank));
+      tooltip = tooltip.replace(/COST100/g, this.getValue(this.cost100, this.rank));
+      tooltip = tooltip.replace(/COST1/g, this.getValue(this.cost1, this.rank));
       tooltip = tooltip.replace(/REQUIRED/g, this.skill_requirement);
-      tooltip = tooltip.replace(/EFFECT%/g, this.getValue(this.effect, rank));
+      tooltip = tooltip.replace(/EFFECT%/g, this.getValue(this.effect, this.rank));
     }
     return tooltip;
   }
+
+  public filter(allowed: Array<String>) {
+    return Object.keys(this)
+      .filter(key => allowed.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = this[key];
+        return obj;
+      }, {});
+  }
+
 
   public getValue(attribute, rank, divisor = null) {
     // rank 0 shows the same dmg as rank 1 - additionally make sure we cannot go out of bounds [0, max rank]

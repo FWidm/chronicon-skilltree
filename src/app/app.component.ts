@@ -1,9 +1,5 @@
 import {Component, OnChanges, SimpleChanges} from '@angular/core';
-import {ChroniconSkill} from './chronicon-skill';
 import {HttpClient} from '@angular/common/http';
-import {forEach} from '@angular/router/src/utils/collection';
-import {Tile} from './tile';
-import {Connector} from './connector';
 
 @Component({
   selector: 'app-root',
@@ -16,26 +12,88 @@ export class AppComponent implements OnChanges {
 
   data: object;
 
-  skills;
-  connectors;
   chars: string[];
   trees: string[];
   selectedChar: string;
   selectedTree: string;
+  levelledSkills: {};
+  level: number;
 
-  demo: ChroniconSkill = <ChroniconSkill>{
-    image: './assets/img.png'
-  };
-  demo2: ChroniconSkill = <ChroniconSkill>{
-    image: './assets/img.png'
-  };
+  /**
+   * Calculates the level of a given tree
+   * @param {{}} levelledSkills
+   * @param {string} tree
+   * @returns {number}
+   */
+  static determineTreeLevel(levelledSkills: {}, tree: string) {
+    let sum = 0;
+    if (levelledSkills.hasOwnProperty(tree)) {
+      for (const skill in levelledSkills[tree]) {
+        if (levelledSkills[tree].hasOwnProperty(skill)) {
+          sum += levelledSkills[tree][skill]['rank'];
+        }
+      }
+    }
+    console.log(sum);
+
+    return sum;
+  }
+
+  /**
+   * Calculates the level of the complete selected skills
+   * @param {{}} levelledSkills
+   * @returns {number}
+   */
+  static determineRequiredLevel(levelledSkills: {}) {
+    let sum = 0;
+    for (const tree in levelledSkills) {
+      if (levelledSkills.hasOwnProperty(tree)) {
+        for (const skill in levelledSkills[tree]) {
+          if (levelledSkills[tree].hasOwnProperty(skill)) {
+            sum += levelledSkills[tree][skill]['rank'];
+          }
+        }
+      }
+
+    }
+    console.log(sum);
+
+    return sum;
+  }
 
   constructor(private http: HttpClient) {
     this.fetchTreeData();
+    this.levelledSkills = {};
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.skills);
+  }
+
+
+  /**
+   * Level up event for a given skill.
+   * @param event
+   */
+  skillLevelUpCallback(event) {
+    if (!this.levelledSkills[this.selectedTree]) {
+      this.levelledSkills[this.selectedTree] = {};
+    }
+    this.levelledSkills[this.selectedTree][event.name] = event.filter(['name', 'rank']);
+    this.level = AppComponent.determineRequiredLevel(this.levelledSkills);
+
+
+  }
+
+  exportSkills() {
+    console.log(this.levelledSkills);
+    // todo: export & import
+    const b64 = LZString.compress(JSON.stringify(this.levelledSkills));
+    console.log(b64);
+    console.log(LZString.decompress(b64));
+  }
+
+  loadSkills(compressed) {
+    console.log(LZString.decompress(compressed));
   }
 
   loadTreeData() {
@@ -50,45 +108,8 @@ export class AppComponent implements OnChanges {
   }
 
   setCharacter(char) {
-    console.log(char);
-    this.trees = this.loadTrees(char.split(': ')[1]);
-  }
-
-  loadTrees(charName) {
-    return Object.keys(this.data['tree'][charName]);
-  }
-
-  populateTree(charName, treeName) {
-    const skillList = [];
-    const connectorList = [];
-    const skills = this.data['tree'];
-
-    const tree = skills[charName][treeName];
-    for (const skill in tree) {
-      if (tree.hasOwnProperty(skill)) {
-        const chroniconSkill = new ChroniconSkill(tree[skill], '.');
-        const previousSkill = skillList.filter(tmpSkill => tmpSkill.x === chroniconSkill.x && tmpSkill.y === chroniconSkill.y);
-        if (previousSkill.length > 0) {
-          previousSkill[0].alternatives.push(chroniconSkill);
-        } else {
-          skillList.push(chroniconSkill);
-        }
-
-        if (chroniconSkill.skill_requirement !== 'none') {
-          const split = chroniconSkill.skill_requirement.split(',');
-          const required = skills[charName][treeName][split[0]];
-          connectorList.push(new Connector(new Tile(required.x, required.y), chroniconSkill));
-        }
-      }
-    }
-    // create a list ordered by x, then y
-    skillList.sort(ChroniconSkill.compareXYCoordinates());
-    this.skills = skillList;
-    this.connectors = connectorList;
-
-    console.log(this.connectors);
-
-    console.log(skillList);
+    this.trees = Object.keys(this.data['tree'][char]);
+    this.levelledSkills = {};
   }
 
   private initializeApp(data) {
@@ -99,12 +120,10 @@ export class AppComponent implements OnChanges {
     }
     this.data = data;
     this.version = data.version;
+    this.levelledSkills['version'] = this.version;
 
     this.chars = Object.keys(data.tree);
-    const char = 'Berserker';
-    const tree = 'Frostborn';
-    this.populateTree(char, tree);
-    this.demo = new ChroniconSkill(data.tree.Berserker.Dragonkin.Dragmageddon, 'assets/img.png');
-    this.demo2 = new ChroniconSkill(data.tree.Berserker.Dragonkin.Fissures, 'assets/img.png');
   }
+
+
 }

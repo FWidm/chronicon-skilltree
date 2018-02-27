@@ -1,8 +1,6 @@
 .chronicon-skill {
   width: 64px;
   height: 64px;
-  position: relative; /* All 'absolute'ly positioned elements are relative to this one */
-
 }
 
 .chronicon-skill-button {
