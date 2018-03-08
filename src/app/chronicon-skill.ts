@@ -46,6 +46,7 @@ export class ChroniconSkill extends Tile {
   value: string;
   alternatives: Array<ChroniconSkill>;
   rank: number;
+  chosen: boolean;
 
   public static compareXYCoordinates() {
     return function (a, b) {
@@ -60,7 +61,7 @@ export class ChroniconSkill extends Tile {
     this.rank = rank;
   }
 
-  static fromJson(jsonObj: any, image: string, rank = 0) {
+  static fromJson(jsonObj: any, image: string, rank = 0, chosen = false) {
     const obj = new ChroniconSkill(jsonObj.x, jsonObj.y, image, jsonObj.name, rank);
     obj.skill_requirement = jsonObj.skill_requirement;
 
@@ -81,6 +82,7 @@ export class ChroniconSkill extends Tile {
     obj.range = jsonObj.range;
     obj.value = jsonObj.value;
     obj.alternatives = [];
+    obj.chosen = chosen;
     return obj;
   }
 

@@ -14,7 +14,7 @@ export class ChroniconSkillComponent implements OnInit, OnChanges {
   @Output() getSkillStatus = new EventEmitter<ChroniconSkill>();
 
   hovered = false;
-  chosen = false;
+  @Input() chosen = false;
 
   constructor() {
   }
@@ -23,17 +23,32 @@ export class ChroniconSkillComponent implements OnInit, OnChanges {
 
   }
 
+  findLevelledSkill() {
+    for (const skill of this.choosableSkills) {
+      if (skill.rank > 0) {
+        return skill;
+      }
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     // either no choosable skills or just one => skill is chosen per default
     if (!this.choosableSkills || this.choosableSkills.length < 1) {
       this.chosen = true;
       return;
     }
+    this.choosableSkills.push(this.skill);
+
     // initialize multiskills
-    if (!this.chosen && this.skill) {
-      this.choosableSkills.push(this.skill);
+    this.chosen = this.skill.chosen;
+    console.log(this.skill.name, this.skill.chosen);
+    const levelledSkill = this.findLevelledSkill();
+    if (!this.chosen && this.skill && !levelledSkill) {
       this.skill = null;
-      // console.log(this);
+    }
+
+    if (levelledSkill) {
+      this.selectSkill(levelledSkill);
     }
   }
 
