@@ -18,6 +18,7 @@ export class AppComponent implements OnChanges {
   selectedTree: string;
   characterState: {};
   level: number;
+  saveCode: string;
 
   /**
    * Calculates the level of the complete selected skills
@@ -79,11 +80,12 @@ export class AppComponent implements OnChanges {
     }
     const b64 = LZString.compressToBase64(JSON.stringify(this.characterState));
     console.log(b64);
+    this.saveCode = b64;
   }
 
   loadSkills(compressed) {
     // test: N4IgIgTghg5g9gOwNYEsEgFykrRACAQQgFs4JNQAPTAJgBoQBPTARgemUwGYBfBgSQQBjNAFNoAFxSIKIahi4NmGAAzsonBT21A=y
-
+    this.saveCode = compressed;
     const jsonStr = LZString.decompressFromBase64(compressed);
     const json = JSON.parse(jsonStr);
     if (json) {
@@ -91,7 +93,6 @@ export class AppComponent implements OnChanges {
       console.log(this.characterState);
       this.selectedChar = this.characterState['char'];
       this.trees = Object.keys(this.data['tree'][this.characterState['char']]);
-
       // this.selectedChar
       // this.selectedChar=""
     }
