@@ -23,12 +23,20 @@
                (getSkillStatus)="skillLevelUpCallback($event)">
 </app-skilltree>
 
-<div class="controls" style="position: absolute; top: 35px; right:10px">
-  <div>Code: <input type="text" disabled
-                    [(ngModel)]="saveCode"></div>
+<div class="controls">
+  <div class="table-divider">
+    <label for="save" class="table-cell"> Save Code: </label>
+    <input class="table-cell"
+           id="save" type="text"
+           disabled
+           [(ngModel)]="saveCode">
+  </div>
 
-
-  <div>Load: <input type="text"
-                    (input)="loadSkills($event.target.value)"></div>
+  <div class="table-divider">
+    <label for="load" class="table-cell"> Load: </label>
+    <input class="table-cell"
+           id="load" type="text"
+           (input)="loadSkills($event.target.value)">
+  </div>
 
 </div>

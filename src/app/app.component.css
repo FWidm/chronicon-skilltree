@@ -1,3 +1,15 @@
-.skill-tree{
+.skill-tree {
   position: relative;
+}
+
+.controls {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  display: table;
+}
+
+.table-cell{ display: table-cell; }
+.table-divider{
+  display: table-row;
 }
