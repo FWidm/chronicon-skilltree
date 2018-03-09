@@ -1,10 +1,8 @@
-import {Input} from '@angular/core';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
 import {Tile} from './tile';
 
 /*
-Number of attributes on the skill.
-{'cooldown': 187,
+ Number of attributes on the skill.
+ {'cooldown': 187,
  'cost1': 225,
  'cost100': 225,
  'damage': 622,
@@ -87,15 +85,15 @@ export class ChroniconSkill extends Tile {
   }
 
   /*
-  {'DAMAGE%': 308,
- 'DURATION': 247,
- 'EFFECT%': 324,
- 'PROC%': 77,
- 'RANGE': 208,
- 'RANGE2': 28,
- 'REQUIRED': 144,
- 'VALUE': 94, 'VALUE%': 1, x
- 'XDAM': 214}
+   {'DAMAGE%': 308,
+   'DURATION': 247,
+   'EFFECT%': 324,
+   'PROC%': 77,
+   'RANGE': 208,
+   'RANGE2': 28,
+   'REQUIRED': 144,
+   'VALUE': 94, 'VALUE%': 1, x
+   'XDAM': 214}
    */
   public getTooltip(): string {
     let tooltip = this.description;
@@ -118,6 +116,7 @@ export class ChroniconSkill extends Tile {
   }
 
   public filter(allowed: Array<string>) {
+    //noinspection TypeScriptUnresolvedFunction
     return Object.keys(this)
     // todo: try to remove the warning that string[] does not contain the "includes" method.
       .filter(key => allowed.includes(key))
@@ -132,12 +131,13 @@ export class ChroniconSkill extends Tile {
     // rank 0 shows the same dmg as rank 1 - additionally make sure we cannot go out of bounds [0, max rank]
     if (attribute) {
       if (divisor) {
-        return Number(attribute.split(',')[Math.max(rank - 1, 0)]) / divisor;
+        return '' + Number(attribute.split(',')[Math.max(rank - 1, 0)]) / divisor;
 
       } else {
-        return attribute.split(',')[Math.max(rank - 1, 0)];
+        return '' + attribute.split(',')[Math.max(rank - 1, 0)];
       }
     }
+    return 'NONE';
   }
 
 

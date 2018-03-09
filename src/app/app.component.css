@@ -3,10 +3,14 @@
 }
 
 .controls {
+  background: #fff;
   position: absolute;
   top: 30px;
   right: 30px;
   display: table;
+  border: 1px solid #cfcfcf;
+  border-radius: 5px;
+  padding: 5px 5px 5px 5px;
 }
 
 .table-cell{ display: table-cell; }
