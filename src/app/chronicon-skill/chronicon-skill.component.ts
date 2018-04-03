@@ -15,6 +15,7 @@ export class ChroniconSkillComponent implements OnInit, OnChanges {
 
   hovered = false;
   @Input() chosen = false;
+  demo_id = 3;
 
   constructor() {
   }

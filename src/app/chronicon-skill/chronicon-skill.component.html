@@ -9,19 +9,17 @@
         <span class="centering">{{skill.rank}}</span>
       </div>
 
-      <button [style.background-image]="'url('+skill.image + ')'"
-              [style.backgroundSize]="'cover'"
-              placement="auto"
-              container="body"
-              [ngbPopover]="tooltip"
-              popoverTitle="{{skill.name}}"
-              triggers="mouseenter:mouseleave"
-              [ngClass]="{'active-skill': skill.isActive() }"
-              (click)="levelUp($event)"
-              class="chronicon-skill-button golden-frame">
-
+      <button
+        [style.background-position-x]="demo_id*-54+'px'"
+        placement="auto"
+        container="body"
+        [ngbPopover]="tooltip"
+        popoverTitle="{{skill.name}}"
+        triggers="mouseenter:mouseleave"
+        [ngClass]="{'active-skill': skill.isActive() }"
+        (click)="levelUp($event)"
+        class="chronicon-skill-button golden-frame">
       </button>
-      <!--<span class="chronicon-skill-name">{{skill.name }}</span>-->
     </div>
 
 
@@ -35,9 +33,9 @@
     <div class="chronicon-skill-selection-tooltip  golden-frame" *ngIf="hovered"
          (mouseleave)="hovered=false;">
       <!--<button [style.background-image]="'url('+skill.image + ')'"-->
-              <!--[style.backgroundSize]="'cover'"-->
-              <!--(click)="selectSkill(skill)"-->
-              <!--class="golden-frame">{{skill.name}}-->
+      <!--[style.backgroundSize]="'cover'"-->
+      <!--(click)="selectSkill(skill)"-->
+      <!--class="golden-frame">{{skill.name}}-->
       <!--</button>-->
 
       <button *ngFor="let skill of choosableSkills"

@@ -67,7 +67,7 @@ export class SkilltreeComponent implements OnInit, OnChanges {
         const rank = this.getCurrentRank(tree[skill].name);
 
 
-        const chroniconSkill = ChroniconSkill.fromJson(tree[skill], '.', rank);
+        const chroniconSkill = ChroniconSkill.fromJson(tree[skill], rank);
         const previousSkill = skillList.filter(tmpSkill => tmpSkill.x === chroniconSkill.x && tmpSkill.y === chroniconSkill.y);
         if (previousSkill.length > 0) {
           previousSkill[0].alternatives.push(chroniconSkill);

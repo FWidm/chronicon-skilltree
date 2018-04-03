@@ -88,6 +88,7 @@ export class AppComponent implements OnChanges {
     this.saveCode = compressed;
     const jsonStr = LZString.decompressFromBase64(compressed);
     const json = JSON.parse(jsonStr);
+    console.log(jsonStr);
     if (json) {
       this.characterState = json;
       console.log(this.characterState);

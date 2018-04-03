@@ -24,6 +24,7 @@ import {Tile} from './tile';
  'y': 639}
  */
 export class ChroniconSkill extends Tile {
+  id: number;
   cooldown: string;
   cost1: string;
   cost100: string;
@@ -53,14 +54,15 @@ export class ChroniconSkill extends Tile {
   }
 
 
-  constructor(x: number | string, y: number | string, image: string, name: string, rank: number) {
-    super(x, y, image);
+  constructor(x: number | string, y: number | string, id: number, name: string, rank: number) {
+    super(x, y);
     this.name = name;
     this.rank = rank;
+    this.id = id;
   }
 
-  static fromJson(jsonObj: any, image: string, rank = 0, chosen = false) {
-    const obj = new ChroniconSkill(jsonObj.x, jsonObj.y, image, jsonObj.name, rank);
+  static fromJson(jsonObj: any, rank = 0, chosen = false) {
+    const obj = new ChroniconSkill(jsonObj.x, jsonObj.y, jsonObj.id, jsonObj.name, rank);
     obj.skill_requirement = jsonObj.skill_requirement;
 
     obj.max_rank = jsonObj.max_rank;
@@ -145,5 +147,8 @@ export class ChroniconSkill extends Tile {
     return !this.type.includes('Passive');
   }
 
+  public getImage(): string {
+    return '';
+  }
 
 }
