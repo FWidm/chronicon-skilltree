@@ -10,7 +10,7 @@
       </div>
 
       <button
-        [style.background-position-x]="demo_id*-54+'px'"
+        [style.background-position-x]="skill.id*-54+'px'"
         placement="auto"
         container="body"
         [ngbPopover]="tooltip"
@@ -39,7 +39,6 @@
       <!--</button>-->
 
       <button *ngFor="let skill of choosableSkills"
-              [style.background-image]="'url('+skill.image + ')'"
               [style.backgroundSize]="'cover'"
               (click)="selectSkill(skill)"
               class="golden-frame">{{skill.name}}

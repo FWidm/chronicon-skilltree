@@ -101,7 +101,7 @@ export class AppComponent implements OnChanges {
 
 
   loadTreeData() {
-    return this.http.get('./assets/chronicon_0_73.json');
+    return this.http.get('./assets/chronicon_0_75.json');
   }
 
   fetchTreeData() {
