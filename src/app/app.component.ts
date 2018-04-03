@@ -27,18 +27,17 @@ export class AppComponent implements OnChanges {
    */
   determineRequiredLevel(levelledSkills: {}) {
     let sum = 0;
-    const char = levelledSkills[this.selectedChar];
-    for (const tree in char) {
-      if (char.hasOwnProperty(tree)) {
-        for (const skill in char[tree]) {
-          if (char[tree].hasOwnProperty(skill)) {
-            sum += char[tree][skill]['rank'];
+    const trees = levelledSkills['trees'];
+    for (const tree in trees) {
+      if (trees.hasOwnProperty(tree)) {
+        for (const skill in trees[tree]) {
+          if (trees[tree].hasOwnProperty(skill)) {
+
+            sum += trees[tree][skill]['rank'];
           }
         }
       }
     }
-    console.log(sum);
-
     return sum;
   }
 
@@ -63,8 +62,10 @@ export class AppComponent implements OnChanges {
     if (!this.characterState['trees'][this.selectedTree]) {
       this.characterState['trees'][this.selectedTree] = {};
     }
-    this.characterState['trees'][this.selectedTree][event.name] = event.filter(['x', 'y', 'rank']);
+    console.log(event);
+    this.characterState['trees'][this.selectedTree][event.name] = event.filter(['id', 'rank']);
     this.level = this.determineRequiredLevel(this.characterState);
+
     this.exportSkills();
 
   }
@@ -94,6 +95,7 @@ export class AppComponent implements OnChanges {
       console.log(this.characterState);
       this.selectedChar = this.characterState['char'];
       this.trees = Object.keys(this.data['tree'][this.characterState['char']]);
+      this.selectedTree = this.characterState['activeTree'];
       // this.selectedChar
       // this.selectedChar=""
     }
