@@ -1,6 +1,6 @@
 import {ChroniconSkill} from '../chronicon-skill';
 
-/*
+/**
 An exchange class that allows serialization and deserialization of chronicon trees.
 
 Expected format:
@@ -30,6 +30,14 @@ export class Exchange {
     this.characterState = {};
   }
 
+  /**
+   * Init this exchange's state with lots of optional choices.
+   * @param {string} char
+   * @param {string} activeTree
+   * @param {object} skills
+   * @param {number} level
+   * @param {string} version
+   */
   public initialize(char?: string, activeTree?: string, skills?: object, level?: number, version?: string) {
     this.characterState[this.CHAR_CLASS] = char;
     this.characterState[this.ACTIVE_TREE] = activeTree;
@@ -40,10 +48,18 @@ export class Exchange {
     }
   }
 
+  /**
+   * Add a chronikonskill to the state.
+   * @param {ChroniconSkill} skill
+   */
   public addSkill(skill: ChroniconSkill) {
     this.characterState[this.SKILLS][skill.id] = skill.filter(['rank']);
   }
 
+
+  /**
+   * Remove all skills that have a rank of 0 from the stats.
+   */
   private pruneLevelZeroSkills() {
     const skills = this.getSkills();
     for (const skillId in skills) {
@@ -55,26 +71,23 @@ export class Exchange {
     }
   }
 
+  /**
+   * Export the object to json, then encode as b64string.
+   * @returns {string} b64string representation of a json string
+   */
   public exportState() {
-    // delete rank 0 skills on export
-    // const selectedTree = this.characterState[this.ACTIVE_TREE];
-    // for (const skill in this.characterState[this.SKILLS][selectedTree]) {
-    //   if (this.characterState[this.SKILLS][selectedTree].hasOwnProperty(skill)) {
-    //     if (this.characterState[this.SKILLS][selectedTree][skill].rank <= 0) {
-    //       delete(this.characterState[this.SKILLS][selectedTree][skill]);
-    //     }
-    //   }
-    // }
     this.pruneLevelZeroSkills();
     this.setLevel(this.determineRequiredLevel());
     console.log(this.characterState);
     const json_str = JSON.stringify(this.characterState);
-    // console.log(json_str);
-    const b64 = LZString.compressToBase64(json_str);
-    // console.log(b64);
-    return b64;
+    return LZString.compressToBase64(json_str);
   }
 
+  /**
+   * Import the state
+   * @param {string} compressed base64 json string
+   * @returns {any} characterstate or undefined when decoding failed
+   */
   public importState(compressed: string) {
     const jsonStr = LZString.decompressFromBase64(compressed);
     const json = JSON.parse(jsonStr);
