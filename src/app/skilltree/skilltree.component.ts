@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {Connector} from '../connector';
 import {ChroniconSkill} from '../chronicon-skill';
 import {Tile} from '../tile';
+import {isNumber} from 'util';
 
 @Component({
   selector: 'app-skilltree',
@@ -12,7 +13,7 @@ export class SkilltreeComponent implements OnInit, OnChanges {
   @Input() data;
   @Input() charName;
   @Input() treeName;
-  @Input() characterState;
+  @Input() exchange;
   @Output() getSkillStatus = new EventEmitter<ChroniconSkill>();
 
 
@@ -42,13 +43,11 @@ export class SkilltreeComponent implements OnInit, OnChanges {
     this.getSkillStatus.emit(event);
   }
 
-  getCurrentRank(skill) {
+  getCurrentRank(skillId: number) {
     let rank = 0;
-    let trees = this.characterState.trees;
-    // console.log(trees);
-    if (trees[this.treeName] && trees[this.treeName][skill]) {
-      console.log(trees[this.treeName][skill]);
-      rank = trees[this.treeName][skill].rank;
+    const skills = this.exchange.getSkills();
+    if (skills[skillId] && isNumber(skills[skillId].rank)) {
+      rank = skills[skillId].rank;
     }
     return rank;
   }
@@ -64,10 +63,10 @@ export class SkilltreeComponent implements OnInit, OnChanges {
     const tree = skills[this.charName][this.treeName];
     for (const skill in tree) {
       if (tree.hasOwnProperty(skill)) {
-        const rank = this.getCurrentRank(tree[skill].name);
-
+        const rank = this.getCurrentRank(tree[skill]['id']);
 
         const chroniconSkill = ChroniconSkill.fromJson(tree[skill], rank);
+
         const previousSkill = skillList.filter(tmpSkill => tmpSkill.x === chroniconSkill.x && tmpSkill.y === chroniconSkill.y);
         if (previousSkill.length > 0) {
           previousSkill[0].alternatives.push(chroniconSkill);

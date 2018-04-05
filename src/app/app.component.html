@@ -10,7 +10,8 @@
   </label>
   <hr>
   <label>
-    <select (change)="characterState['activeTree']=$event.target.value.split(': ')[1]" [(ngModel)]="selectedTree"
+    <select (change)="setActiveTree($event.target.value.split(': ')[1])"
+            [(ngModel)]="selectedTree"
             *ngIf="trees">
       <option *ngFor="let c of trees" [ngValue]="c">{{c}}</option>
     </select>
@@ -20,7 +21,7 @@
   <app-skilltree [data]="data"
                  [charName]="selectedChar"
                  [treeName]="selectedTree"
-                 [characterState]="characterState"
+                 [exchange]="exchange"
                  (getSkillStatus)="skillLevelUpCallback($event)">
   </app-skilltree>
 
