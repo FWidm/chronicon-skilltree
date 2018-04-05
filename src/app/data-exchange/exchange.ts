@@ -44,16 +44,28 @@ export class Exchange {
     this.characterState[this.SKILLS][skill.id] = skill.filter(['rank']);
   }
 
-  public exportState() {
-    // delete rank 0 skills on export
-    const selectedTree = this.characterState[this.ACTIVE_TREE];
-    for (const skill in this.characterState[this.SKILLS][selectedTree]) {
-      if (this.characterState[this.SKILLS][selectedTree].hasOwnProperty(skill)) {
-        if (this.characterState[this.SKILLS][selectedTree][skill].rank <= 0) {
-          delete(this.characterState[this.SKILLS][selectedTree][skill]);
+  private pruneLevelZeroSkills() {
+    const skills = this.getSkills();
+    for (const skillId in skills) {
+      if (skills.hasOwnProperty(skillId)) {
+        if (skills[skillId]['rank'] <= 0) {
+          delete(skills[skillId]);
         }
       }
     }
+  }
+
+  public exportState() {
+    // delete rank 0 skills on export
+    // const selectedTree = this.characterState[this.ACTIVE_TREE];
+    // for (const skill in this.characterState[this.SKILLS][selectedTree]) {
+    //   if (this.characterState[this.SKILLS][selectedTree].hasOwnProperty(skill)) {
+    //     if (this.characterState[this.SKILLS][selectedTree][skill].rank <= 0) {
+    //       delete(this.characterState[this.SKILLS][selectedTree][skill]);
+    //     }
+    //   }
+    // }
+    this.pruneLevelZeroSkills();
     this.setLevel(this.determineRequiredLevel());
     console.log(this.characterState);
     const json_str = JSON.stringify(this.characterState);
