@@ -35,7 +35,6 @@ export class AppComponent implements OnChanges {
    * @param event
    */
   skillLevelUpCallback(event) {
-    console.log(event);
     this.exchange.addSkill(event);
     this.exportSkills();
   }
@@ -71,14 +70,12 @@ export class AppComponent implements OnChanges {
   }
 
   setActiveTree(tree: string) {
-    console.log(tree);
     this.selectedTree = tree;
     this.exchange.setActiveTree(tree);
   }
 
   private initializeApp(data) {
     // get charnames
-    console.log(data.tree);
     if (data == null) {
       return;
     }

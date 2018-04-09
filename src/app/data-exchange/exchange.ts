@@ -78,7 +78,6 @@ export class Exchange {
   public exportState() {
     this.pruneLevelZeroSkills();
     this.setLevel(this.determineRequiredLevel());
-    console.log(this.characterState);
     const json_str = JSON.stringify(this.characterState);
     return LZString.compressToBase64(json_str);
   }
@@ -91,10 +90,8 @@ export class Exchange {
   public importState(compressed: string) {
     const jsonStr = LZString.decompressFromBase64(compressed);
     const json = JSON.parse(jsonStr);
-    console.log(jsonStr);
     if (json) {
       this.characterState = json;
-      console.log(this.characterState);
       return this.characterState;
     }
     return undefined;

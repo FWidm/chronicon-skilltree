@@ -151,4 +151,21 @@ export class ChroniconSkill extends Tile {
     return '';
   }
 
+  /**
+   * Levels the rank of this skill by a modifier, returns whether it was modified.
+   * @param {number} modifier
+   * @returns {number} difference between new and old rank.
+   */
+  public levelRank(modifier: number) {
+    const old = this.rank;
+    this.rank = Math.min(Math.max(0, this.rank + modifier), this.max_rank);
+
+    return this.rank - old;
+  }
+
+  public setRank(rank: number) {
+    this.rank = Math.min(Math.max(0, rank), this.max_rank);
+
+  }
+
 }

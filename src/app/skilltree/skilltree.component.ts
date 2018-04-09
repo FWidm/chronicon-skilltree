@@ -3,6 +3,7 @@ import {Connector} from '../connector';
 import {ChroniconSkill} from '../chronicon-skill';
 import {Tile} from '../tile';
 import {isNumber} from 'util';
+import {SkillLevelEvent} from '../events/skill_level_event';
 
 @Component({
   selector: 'app-skilltree',
@@ -19,8 +20,10 @@ export class SkilltreeComponent implements OnInit, OnChanges {
 
   skills;
   connectors;
+  innate: ChroniconSkill;
 
   constructor() {
+
   }
 
   ngOnInit() {
@@ -39,8 +42,10 @@ export class SkilltreeComponent implements OnInit, OnChanges {
    * Callback for levelling skills
    * @param event
    */
-  skillLevelUpCallback(event) {
-    this.getSkillStatus.emit(event);
+  skillLevelUpCallback(event: SkillLevelEvent) {
+    console.log(event);
+    this.innate.levelRank(event.modifier);
+    this.getSkillStatus.emit(event.skill);
   }
 
   getCurrentRank(skillId: number) {
@@ -85,9 +90,7 @@ export class SkilltreeComponent implements OnInit, OnChanges {
     skillList.sort(ChroniconSkill.compareXYCoordinates());
     this.skills = skillList;
     this.connectors = connectorList;
+    this.innate = this.skills.find(skill => skill.name === this.treeName);
 
-    console.log(this.connectors);
-
-    console.log(skillList);
   }
 }
