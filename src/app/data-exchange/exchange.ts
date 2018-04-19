@@ -1,4 +1,4 @@
-import {ChroniconSkill} from '../chronicon-skill';
+import {ChroniconSkill} from '../models/chronicon-skill';
 
 /**
 An exchange class that allows serialization and deserialization of chronicon trees.

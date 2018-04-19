@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {Connector} from '../connector';
+import {Connector} from '../../models/connector';
 
 @Component({
   selector: 'app-connector',

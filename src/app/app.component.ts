@@ -52,9 +52,8 @@ export class AppComponent implements OnChanges {
     this.selectedTree = this.exchange.getActiveTree();
   }
 
-
   loadTreeData() {
-    return this.http.get('./assets/chronicon_0_75.json');
+    return this.http.get('./assets/skilldata/chronicon_0_80_0.json');
   }
 
   fetchTreeData() {

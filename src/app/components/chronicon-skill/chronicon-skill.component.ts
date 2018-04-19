@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter} from '@angular/core';
-import {ChroniconSkill} from '../chronicon-skill';
-import {SkillLevelEvent} from '../events/skill_level_event';
+import {ChroniconSkill} from '../../models/chronicon-skill';
+import {SkillLevelEvent} from '../../events/skill_level_event';
 
 @Component({
   selector: 'app-chronicon-skill',

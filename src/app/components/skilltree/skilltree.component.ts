@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Connector} from '../connector';
-import {ChroniconSkill} from '../chronicon-skill';
-import {Tile} from '../tile';
+import {Connector} from '../../models/connector';
+import {ChroniconSkill} from '../../models/chronicon-skill';
+import {Tile} from '../../models/tile';
 import {isNumber} from 'util';
-import {SkillLevelEvent} from '../events/skill_level_event';
+import {SkillLevelEvent} from '../../events/skill_level_event';
 
 @Component({
   selector: 'app-skilltree',
@@ -57,35 +57,46 @@ export class SkilltreeComponent implements OnInit, OnChanges {
     return rank;
   }
 
+
   /**
    * Populate the tree
    */
   populateTree() {
-    const skillList = [];
+    const skillList: [ChroniconSkill] | any = [];
     const connectorList = [];
     const skills = this.data['tree'];
 
     const tree = skills[this.charName][this.treeName];
+
     for (const skill in tree) {
       if (tree.hasOwnProperty(skill)) {
+
         const rank = this.getCurrentRank(tree[skill]['id']);
 
         const chroniconSkill = ChroniconSkill.fromJson(tree[skill], rank);
-
         const previousSkill = skillList.filter(tmpSkill => tmpSkill.x === chroniconSkill.x && tmpSkill.y === chroniconSkill.y);
         if (previousSkill.length > 0) {
           previousSkill[0].alternatives.push(chroniconSkill);
         } else {
           skillList.push(chroniconSkill);
         }
-
-        if (chroniconSkill.skill_requirement !== 'none') {
-          const split = chroniconSkill.skill_requirement.split(',');
-          const required = skills[this.charName][this.treeName][split[0]];
-          connectorList.push(new Connector(new Tile(required.x, required.y), chroniconSkill));
+      }
+    }
+    for (const chroniconSkill of skillList) {
+      if (chroniconSkill.skill_requirement !== 'none') {
+        const requirements = chroniconSkill.skill_requirement.substring(1, chroniconSkill.skill_requirement.length - 1);
+        const split = requirements.split(',');
+        for (const tmpSkill of skillList) {
+          if (split.indexOf(tmpSkill.id) >= 0) {
+            connectorList.push(new Connector(new Tile(tmpSkill.x, tmpSkill.y), chroniconSkill));
+            // assumption: there are no skills that have multiple dependencies but are in diff.
+            // locations, as such we can stop after finding one path for one skill.
+            break;
+          }
         }
       }
     }
+
     // create a list ordered by x, then y
     skillList.sort(ChroniconSkill.compareXYCoordinates());
     this.skills = skillList;

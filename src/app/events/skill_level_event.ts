@@ -1,4 +1,4 @@
-import {ChroniconSkill} from '../chronicon-skill';
+import {ChroniconSkill} from '../models/chronicon-skill';
 
 export class SkillLevelEvent {
   public skill: ChroniconSkill;

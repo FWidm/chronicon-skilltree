@@ -24,28 +24,28 @@ import {Tile} from './tile';
  'y': 639}
  */
 export class ChroniconSkill extends Tile {
-  id: number;
-  cooldown: string;
-  cost1: string;
-  cost100: string;
-  damage: string;
-  description: string;
-  duration: string;
-  effect: string;
-  element: string;
-  family: string;
-  max_rank: number;
-  min_level: number;
-  name: string;
-  proc: string;
-  range: string;
-  range2: string;
-  skill_requirement: string;
-  type: string;
-  value: string;
-  alternatives: Array<ChroniconSkill>;
-  rank: number;
-  chosen: boolean;
+  public id: number;
+  public cooldown: string;
+  public cost1: string;
+  public cost100: string;
+  public damage: string;
+  public description: string;
+  public duration: string;
+  public effect: string;
+  public element: string;
+  public family: string;
+  public max_rank: number;
+  public min_level: number;
+  public name: string;
+  public proc: string;
+  public range: string;
+  public range2: string;
+  public skill_requirement: string;
+  public type: string;
+  public value: string;
+  public alternatives: Array<ChroniconSkill>;
+  public rank: number;
+  public chosen: boolean;
 
   public static compareXYCoordinates() {
     return function (a, b) {
@@ -120,7 +120,6 @@ export class ChroniconSkill extends Tile {
   public filter(allowed: Array<string>) {
     //noinspection TypeScriptUnresolvedFunction
     return Object.keys(this)
-    // todo: try to remove the warning that string[] does not contain the "includes" method.
       .filter(key => allowed.includes(key))
       .reduce((obj, key) => {
         obj[key] = this[key];
