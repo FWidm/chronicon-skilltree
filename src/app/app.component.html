@@ -1,32 +1,35 @@
-<h1>{{title}} - V. {{version}}</h1>
+<div class="container-fluid">
 
-<hr>
+  <h1>{{title}} - V. {{version}}</h1>
+  <hr>
 
-<label>
-  <select (change)="setCharacter($event.target.value.split(': ')[1])" [(ngModel)]="selectedChar" *ngIf="chars">
-    <option *ngFor="let c of chars" [ngValue]="c">{{c}}</option>
-  </select>
-</label>
-<hr>
-<label>
-  <select (change)="characterState['activeTree']=$event.target.value.split(': ')[1]" [(ngModel)]="selectedTree"
-          *ngIf="trees">
-    <option *ngFor="let c of trees" [ngValue]="c">{{c}}</option>
-  </select>
-</label>
-<hr>
+  <label>
+    <select (change)="setCharacter($event.target.value.split(': ')[1])" [(ngModel)]="selectedChar" *ngIf="chars">
+      <option *ngFor="let c of chars" [ngValue]="c">{{c}}</option>
+    </select>
+  </label>
+  <hr>
+  <label>
+    <select (change)="setActiveTree($event.target.value.split(': ')[1])"
+            [(ngModel)]="selectedTree"
+            *ngIf="trees">
+      <option *ngFor="let c of trees" [ngValue]="c">{{c}}</option>
+    </select>
+  </label>
+  <hr>
 
-<app-skilltree [data]="data"
-               [charName]="selectedChar"
-               [treeName]="selectedTree"
-               [characterState]="characterState"
-               (getSkillStatus)="skillLevelUpCallback($event)">
-</app-skilltree>
+  <app-skilltree [data]="data"
+                 [charName]="selectedChar"
+                 [treeName]="selectedTree"
+                 [exchange]="exchange"
+                 (getSkillStatus)="skillLevelUpCallback($event)">
+  </app-skilltree>
 
+</div>
 <div class="controls">
   <div class="table-divider">
     <label for="save" class="table-cell"> Save Code: </label>
-    <input class="table-cell"
+    <input class="table-cell form-control"
            id="save" type="text"
            disabled
            [(ngModel)]="saveCode">
@@ -34,9 +37,9 @@
 
   <div class="table-divider">
     <label for="load" class="table-cell"> Load: </label>
-    <input class="table-cell"
+    <input class="table-cell form-control"
            id="load" type="text"
            (input)="loadSkills($event.target.value)">
   </div>
-
+  <app-help-button></app-help-button>
 </div>

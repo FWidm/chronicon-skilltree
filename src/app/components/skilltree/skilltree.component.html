@@ -1,4 +1,5 @@
 <div class="skill-tree">
+  <!-- 6x9 grid -->
   <app-connector *ngFor="let connector of connectors"
                  [connector]="connector"
                  [style.left.px]="52+90*connector.from.x"
@@ -6,7 +7,7 @@
                  style="position: absolute;">
   </app-connector>
 
-  <div class="skill" *ngFor="let skill of skills">
+  <div *ngFor="let skill of skills">
     <app-chronicon-skill [skill]="skill"
                          [level]="level"
                          [choosableSkills]="skill.alternatives"

@@ -1,5 +1,6 @@
 import {Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter} from '@angular/core';
-import {ChroniconSkill} from '../chronicon-skill';
+import {ChroniconSkill} from '../../models/chronicon-skill';
+import {SkillLevelEvent} from '../../events/skill_level_event';
 
 @Component({
   selector: 'app-chronicon-skill',
@@ -11,7 +12,7 @@ export class ChroniconSkillComponent implements OnInit, OnChanges {
   @Input() skill: ChroniconSkill;
   @Input() level: number;
   @Input() choosableSkills: [ChroniconSkill];
-  @Output() getSkillStatus = new EventEmitter<ChroniconSkill>();
+  @Output() getSkillStatus = new EventEmitter<SkillLevelEvent>();
 
   hovered = false;
   @Input() chosen = false;
@@ -41,7 +42,6 @@ export class ChroniconSkillComponent implements OnInit, OnChanges {
 
     // initialize multiskills
     this.chosen = this.skill.chosen;
-    console.log(this.skill.name, this.skill.chosen);
     const levelledSkill = this.findLevelledSkill();
     if (!this.chosen && this.skill && !levelledSkill) {
       this.skill = null;
@@ -68,28 +68,17 @@ export class ChroniconSkillComponent implements OnInit, OnChanges {
     // this.rank = Math.clamp
     if (event.shiftKey) {
       if (this.skill.rank >= 0) {
+        modifier = -1 * modifier;
         // if the skill is delevelled while being at rank 0 - show the choose skill again.
         if (this.skill.rank === 0 && this.skill.isActive()) {
           this.chosen = false;
         }
-        this.skill.rank = Math.max(0, this.skill.rank - modifier);
-        this.getSkillStatus.emit(this.skill);
-      }
-    } else {
-      if (this.level + modifier >= 100) {
-        // set the modifier to the maximum possible modifier, then add it
-        modifier = modifier - (this.level + modifier - 100);
-        this.skill.rank = Math.min(this.skill.max_rank, this.skill.rank + modifier);
-        this.getSkillStatus.emit(this.skill);
-        return;
-      }
-      if (this.skill.rank <= this.skill.max_rank) {
-        this.skill.rank = Math.min(this.skill.max_rank, this.skill.rank + modifier);
-        this.getSkillStatus.emit(this.skill);
-
       }
     }
+    const diff = this.skill.levelRank(modifier);
+    this.getSkillStatus.emit(new SkillLevelEvent(this.skill, diff));
   }
+
 
   /**
    * Select a skill from a multi select

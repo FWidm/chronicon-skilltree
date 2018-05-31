@@ -1,0 +1,21 @@
+<div>
+  <button class="btn btn-xs btn-outline-primary" (click)="open(content)">
+    <i class="fa fa-info"></i>
+  </button>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Info</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Hold <b>SHIFT</b> to de-level a skill. When a skill is at rank 0 and you delevel, the skill selection will pop up again.</p>
+    <p>Hold <b>CTRL</b> to level up or down by a factor of 5.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

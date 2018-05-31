@@ -1,10 +1,8 @@
-import {Input} from '@angular/core';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
 import {Tile} from './tile';
 
 /*
-Number of attributes on the skill.
-{'cooldown': 187,
+ Number of attributes on the skill.
+ {'cooldown': 187,
  'cost1': 225,
  'cost100': 225,
  'damage': 622,
@@ -26,27 +24,28 @@ Number of attributes on the skill.
  'y': 639}
  */
 export class ChroniconSkill extends Tile {
-  cooldown: string;
-  cost1: string;
-  cost100: string;
-  damage: string;
-  description: string;
-  duration: string;
-  effect: string;
-  element: string;
-  family: string;
-  max_rank: number;
-  min_level: number;
-  name: string;
-  proc: string;
-  range: string;
-  range2: string;
-  skill_requirement: string;
-  type: string;
-  value: string;
-  alternatives: Array<ChroniconSkill>;
-  rank: number;
-  chosen: boolean;
+  public id: number;
+  public cooldown: string;
+  public cost1: string;
+  public cost100: string;
+  public damage: string;
+  public description: string;
+  public duration: string;
+  public effect: string;
+  public element: string;
+  public family: string;
+  public max_rank: number;
+  public min_level: number;
+  public name: string;
+  public proc: string;
+  public range: string;
+  public range2: string;
+  public skill_requirement: string;
+  public type: string;
+  public value: string;
+  public alternatives: Array<ChroniconSkill>;
+  public rank: number;
+  public chosen: boolean;
 
   public static compareXYCoordinates() {
     return function (a, b) {
@@ -55,14 +54,15 @@ export class ChroniconSkill extends Tile {
   }
 
 
-  constructor(x: number | string, y: number | string, image: string, name: string, rank: number) {
-    super(x, y, image);
+  constructor(x: number | string, y: number | string, id: number, name: string, rank: number) {
+    super(x, y);
     this.name = name;
     this.rank = rank;
+    this.id = id;
   }
 
-  static fromJson(jsonObj: any, image: string, rank = 0, chosen = false) {
-    const obj = new ChroniconSkill(jsonObj.x, jsonObj.y, image, jsonObj.name, rank);
+  static fromJson(jsonObj: any, rank = 0, chosen = false) {
+    const obj = new ChroniconSkill(jsonObj.x, jsonObj.y, jsonObj.id, jsonObj.name, rank);
     obj.skill_requirement = jsonObj.skill_requirement;
 
     obj.max_rank = jsonObj.max_rank;
@@ -87,15 +87,15 @@ export class ChroniconSkill extends Tile {
   }
 
   /*
-  {'DAMAGE%': 308,
- 'DURATION': 247,
- 'EFFECT%': 324,
- 'PROC%': 77,
- 'RANGE': 208,
- 'RANGE2': 28,
- 'REQUIRED': 144,
- 'VALUE': 94, 'VALUE%': 1, x
- 'XDAM': 214}
+   {'DAMAGE%': 308,
+   'DURATION': 247,
+   'EFFECT%': 324,
+   'PROC%': 77,
+   'RANGE': 208,
+   'RANGE2': 28,
+   'REQUIRED': 144,
+   'VALUE': 94, 'VALUE%': 1, x
+   'XDAM': 214}
    */
   public getTooltip(): string {
     let tooltip = this.description;
@@ -118,8 +118,8 @@ export class ChroniconSkill extends Tile {
   }
 
   public filter(allowed: Array<string>) {
+    //noinspection TypeScriptUnresolvedFunction
     return Object.keys(this)
-    // todo: try to remove the warning that string[] does not contain the "includes" method.
       .filter(key => allowed.includes(key))
       .reduce((obj, key) => {
         obj[key] = this[key];
@@ -132,12 +132,13 @@ export class ChroniconSkill extends Tile {
     // rank 0 shows the same dmg as rank 1 - additionally make sure we cannot go out of bounds [0, max rank]
     if (attribute) {
       if (divisor) {
-        return Number(attribute.split(',')[Math.max(rank - 1, 0)]) / divisor;
+        return '' + Number(attribute.split(',')[Math.max(rank - 1, 0)]) / divisor;
 
       } else {
-        return attribute.split(',')[Math.max(rank - 1, 0)];
+        return '' + attribute.split(',')[Math.max(rank - 1, 0)];
       }
     }
+    return 'NONE';
   }
 
 
@@ -145,5 +146,25 @@ export class ChroniconSkill extends Tile {
     return !this.type.includes('Passive');
   }
 
+  public getImage(): string {
+    return '';
+  }
+
+  /**
+   * Levels the rank of this skill by a modifier, returns whether it was modified.
+   * @param {number} modifier
+   * @returns {number} difference between new and old rank.
+   */
+  public levelRank(modifier: number) {
+    const old = this.rank;
+    this.rank = Math.min(Math.max(0, this.rank + modifier), this.max_rank);
+
+    return this.rank - old;
+  }
+
+  public setRank(rank: number) {
+    this.rank = Math.min(Math.max(0, rank), this.max_rank);
+
+  }
 
 }

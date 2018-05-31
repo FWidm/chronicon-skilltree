@@ -6,17 +6,23 @@
 .chronicon-skill-button {
   width: 100%;
   height: 100%;
-  background-color: #000000;
   border-radius: 50%;
   position: absolute;
-
 }
 
+.skill_icon{
+  background-image: url('/assets/icons.png');
+  background-color: black;
+  background-position-y: 0;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  image-rendering: pixelated
+}
 .chronicon-skill-count {
   position: absolute;
   right: 0;
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   z-index: 1;
   color: goldenrod;
   background-color: #000000;
@@ -39,11 +45,11 @@
 }
 
 .golden-frame{
-  border: goldenrod 3px solid;
+  border: goldenrod 5px solid;
 }
 
 .golden-frame-thin{
-  border: goldenrod 1px solid;
+  border: goldenrod 2px solid;
 }
 
 .active-skill{
@@ -51,8 +57,6 @@
 }
 
 .chronicon-skill-selection {
-  width: 64px;
-  height: 64px;
   position: relative; /* All 'absolute'ly positioned elements are relative to this one */
   background: black url("/assets/plus.svg");
   background-size: cover;
@@ -60,14 +64,14 @@
 }
 
 .chronicon-skill-selection-tooltip {
-  top: -5px;
-  left: -5px;
+  top: -4px;
+  left: -4px;
   height: 70px;
   position: absolute;
-  z-index: 100;
-  background-color: black;
-  color: goldenrod;
-  width: 300px;
-  padding: 0px 5px 5px 5px;
+  z-index: 2;
   border-radius: 10px;
+}
+
+.popover{
+  z-index: 100 !important;
 }

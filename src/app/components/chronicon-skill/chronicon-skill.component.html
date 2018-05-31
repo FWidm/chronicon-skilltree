@@ -1,0 +1,77 @@
+<div *ngIf="chosen; then selected_skill else selection">
+
+</div>
+
+<ng-template #selected_skill>
+  <div class="chronicon-skill" *ngIf="isChroniconSkill()">
+    <div class="skill">
+      <div class="chronicon-skill-count golden-frame-thin">
+        <span class="centering">{{skill.rank}}</span>
+      </div>
+
+      <!-- todo, replace with placement => auto-->
+
+      <button
+        [style.background-position-x]="skill.id*-54+'px'"
+        placement="right"
+        container=".skill-tree"
+        [ngbPopover]="tooltip"
+        popoverTitle="{{skill.name}}"
+        triggers="mouseenter:mouseleave"
+        [ngClass]="{'active-skill': skill.isActive() }"
+        (click)="levelUp($event)"
+        class="chronicon-skill-button skill_icon golden-frame">
+      </button>
+    </div>
+
+
+  </div>
+
+</ng-template>
+<ng-template #selection>
+  <div class="chronicon-skill chronicon-skill-selection golden-frame-thin"
+       (mouseenter)=" hovered=true;" (mouseleave)="hovered=false;">
+
+    <div class="chronicon-skill-selection-tooltip" *ngIf="hovered"
+         (mouseleave)="hovered=false;">
+      <!--<button [style.background-image]="'url('+skill.image + ')'"-->
+      <!--[style.backgroundSize]="'cover'"-->
+      <!--(click)="selectSkill(skill)"-->
+      <!--class="golden-frame">{{skill.name}}-->
+      <!--</button>-->
+
+      <button *ngFor="let skill of choosableSkills"
+              [style.backgroundSize]="'cover'"
+              [style.background-position-x]="skill.id*-54+'px'"
+              (click)="selectSkill(skill)"
+              placement="auto"
+              [ngbPopover]="skill.getTooltip()"
+              popoverTitle="{{skill.name}}"
+              triggers="mouseenter:mouseleave"
+              class="chronicon-skill skill_icon golden-frame">
+      </button>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #tooltip>
+  <div *ngIf="isChroniconSkill()">
+    <div *ngIf="skill.element">
+      <p>Element: {{skill.element}}</p>
+    </div>
+    <div *ngIf="skill.family!='None'">
+      <p>Family: {{skill.family}}</p>
+    </div>
+
+    <p>{{skill.getTooltip(rank)}}</p>
+
+    <div *ngIf="skill.max_rank">
+      <p>Maximum Rank: {{skill.max_rank}}</p>
+    </div>
+    <!-- Hide if cooldown is undefined-->
+    <div *ngIf="skill.cooldown">
+      <p>Cooldown: {{skill.cooldown}}</p>
+    </div>
+  </div>
+</ng-template>

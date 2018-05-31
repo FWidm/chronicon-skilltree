@@ -1,5 +1,6 @@
 import {Component, OnChanges, SimpleChanges} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {Exchange} from './data-exchange/exchange';
 
 @Component({
   selector: 'app-root',
@@ -16,39 +17,13 @@ export class AppComponent implements OnChanges {
   trees: string[];
   selectedChar: string;
   selectedTree: string;
-  characterState: {};
-  level: number;
   saveCode: string;
+  exchange: Exchange;
 
-  /**
-   * Calculates the level of the complete selected skills
-   * @param {{}} levelledSkills
-   * @returns {number}
-   */
-  determineRequiredLevel(levelledSkills: {}) {
-    let sum = 0;
-    const char = levelledSkills[this.selectedChar];
-    for (const tree in char) {
-      if (char.hasOwnProperty(tree)) {
-        for (const skill in char[tree]) {
-          if (char[tree].hasOwnProperty(skill)) {
-            sum += char[tree][skill]['rank'];
-          }
-        }
-      }
-    }
-    console.log(sum);
-
-    return sum;
-  }
 
   constructor(private http: HttpClient) {
     this.fetchTreeData();
-    this.characterState = {
-      'char': undefined,
-      'activeTree': undefined,
-      'trees': {}
-    };
+    this.exchange = new Exchange();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -60,47 +35,26 @@ export class AppComponent implements OnChanges {
    * @param event
    */
   skillLevelUpCallback(event) {
-    if (!this.characterState['trees'][this.selectedTree]) {
-      this.characterState['trees'][this.selectedTree] = {};
-    }
-    this.characterState['trees'][this.selectedTree][event.name] = event.filter(['x', 'y', 'rank']);
-    this.level = this.determineRequiredLevel(this.characterState);
+    this.exchange.addSkill(event);
     this.exportSkills();
-
   }
 
   exportSkills() {
-    // delete rank 0 skills on export
-    for (const skill in this.characterState['trees'][this.selectedTree]) {
-      if (this.characterState['trees'][this.selectedTree].hasOwnProperty(skill)) {
-        if (this.characterState['trees'][this.selectedTree][skill].rank <= 0) {
-          delete(this.characterState['trees'][this.selectedTree][skill]);
-        }
-      }
-    }
-    const b64 = LZString.compressToBase64(JSON.stringify(this.characterState));
-    console.log(b64);
-    this.saveCode = b64;
+    this.saveCode = this.exchange.exportState();
   }
 
   loadSkills(compressed) {
-    // test: N4IgIgTghg5g9gOwNYEsEgFykrRACAQQgFs4JNQAPTAJgBoQBPTARgemUwGYBfBgSQQBjNAFNoAFxSIKIahi4NmGAAzsonBT21A=y
     this.saveCode = compressed;
-    const jsonStr = LZString.decompressFromBase64(compressed);
-    const json = JSON.parse(jsonStr);
-    if (json) {
-      this.characterState = json;
-      console.log(this.characterState);
-      this.selectedChar = this.characterState['char'];
-      this.trees = Object.keys(this.data['tree'][this.characterState['char']]);
-      // this.selectedChar
-      // this.selectedChar=""
-    }
+    this.exchange.importState(compressed);
+    this.selectedChar = this.exchange.getActiveChar();
+    console.log(this.selectedChar);
+    this.trees = Object.keys(this.data['tree'][this.selectedChar]);
+    this.selectedTree = this.exchange.getActiveTree();
   }
 
-
   loadTreeData() {
-    return this.http.get('./assets/chronicon_0_73.json');
+
+    return this.http.get('./assets/skilldata/chronicon_0_80_0.json');
   }
 
   fetchTreeData() {
@@ -110,25 +64,24 @@ export class AppComponent implements OnChanges {
       });
   }
 
-  setCharacter(char) {
+  setCharacter(char: string) {
     this.trees = Object.keys(this.data['tree'][char]);
-    this.characterState = {
-      'char': char,
-      'activeTree': {},
-      'trees': {}
-    };
+    this.exchange.setActiveChar(char);
+  }
+
+  setActiveTree(tree: string) {
+    this.selectedTree = tree;
+    this.exchange.setActiveTree(tree);
   }
 
   private initializeApp(data) {
     // get charnames
-    console.log(data.tree);
     if (data == null) {
       return;
     }
     this.data = data;
     this.version = data.version;
-    this.characterState['version'] = this.version;
-
+    this.exchange.setVersion(this.version);
     this.chars = Object.keys(data.tree);
   }
 
