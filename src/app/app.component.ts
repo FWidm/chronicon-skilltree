@@ -53,6 +53,7 @@ export class AppComponent implements OnChanges {
   }
 
   loadTreeData() {
+
     return this.http.get('./assets/skilldata/chronicon_0_80_0.json');
   }
 
